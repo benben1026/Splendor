@@ -1,4 +1,4 @@
-package java.com.benben.splendor.gameItem;
+package com.benben.splendor.gameItem;
 
 public enum Color {
     RED,

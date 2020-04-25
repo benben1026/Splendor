@@ -1,4 +1,4 @@
-package java.com.benben.splendor.gameItem;
+package com.benben.splendor.gameItem;
 
 import java.util.Map;
 

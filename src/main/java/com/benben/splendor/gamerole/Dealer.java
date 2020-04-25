@@ -2,22 +2,34 @@ package com.benben.splendor.gamerole;
 
 import com.benben.splendor.gameItem.Card;
 import com.benben.splendor.gameItem.Color;
+import com.benben.splendor.util.GameInitUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class Dealer extends Role{
 
-    private Map<Color, Integer> _tokens;
-    private List<Card> _inVisibleCards;
-    private List<Card> _visibleCards;
+    private List<Card> _inVisibleCardsLevel1;
+    private List<Card> _inVisibleCardsLevel2;
+    private List<Card> _inVisibleCardsLevel3;
 
-    public Dealer(Map<Color, Integer> tokens, List<Card> cards) {
-        super(tokens, cards);
-        _tokens = tokens;
-        _inVisibleCards = cards;
-        _visibleCards = new ArrayList<>();
+    private List<Card> _VisibleCardsLevel1;
+    private List<Card> _VisibleCardsLevel2;
+    private List<Card> _VisibleCardsLevel3;
+
+
+    public Dealer(int numOfPlayers) {
+        GameInitUtil gameInitUtil = new GameInitUtil();
+        gameInitUtil.initGame(numOfPlayers);
+        _tokens = gameInitUtil.getTokens();
+        _inVisibleCardsLevel1 = gameInitUtil.getCardsLevel1();
+        _inVisibleCardsLevel2 = gameInitUtil.getCardsLevel2();
+        _inVisibleCardsLevel3 = gameInitUtil.getCardsLevel3();
+        initVisibleCards();
     }
+
+    private void initVisibleCards() {}
 
     public boolean sell(Map<Color, Integer> tokens, Card card) {
         return false;

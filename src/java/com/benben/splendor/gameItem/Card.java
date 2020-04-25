@@ -3,7 +3,7 @@ package java.com.benben.splendor.gameItem;
 import java.util.Map;
 
 public class Card extends Item{
-    private Color _color;
+    private final Color _color;
 
     public Card(Color color, int score, Map<Color, Integer> price) {
         _color = color;

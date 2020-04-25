@@ -7,11 +7,6 @@ import java.util.Map;
 
 public abstract class Role {
 
-    private Map<Color, Integer> _tokens;
-    private List<Card> _cards;
-
-    public Role(Map<Color, Integer> tokens, List<Card> cards) {
-        _tokens = tokens;
-        _cards = cards;
-    }
+    Map<Color, Integer> _tokens;
+    List<Card> _cards;
 }

@@ -3,7 +3,7 @@ package java.com.benben.splendor.gameItem;
 import java.util.List;
 import java.util.Map;
 
-public class Role {
+public abstract class Role {
 
     private Map<Color, Integer> _tokens;
     private List<Card> _cards;

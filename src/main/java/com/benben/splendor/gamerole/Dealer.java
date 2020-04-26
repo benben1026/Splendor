@@ -104,6 +104,11 @@ public class Dealer extends Role{
             return false;
         }
         player.addHoldCard(removeCardFromIndex(index));
+        if (_tokens.get(ColorUtil.Color.YELLOW) > 0) {
+            player.addToken(ColorUtil.Color.YELLOW, 1);
+            _tokens.put(ColorUtil.Color.YELLOW, _tokens.get(ColorUtil.Color.YELLOW) - 1);
+            // Todo: check the total number of tokens does not exceed 10
+        }
         return true;
     }
 

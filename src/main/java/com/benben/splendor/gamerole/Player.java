@@ -51,10 +51,14 @@ public class Player extends Role{
         }
     }
 
-    public void takeTokens(int[] tokens) {
+    public void addToken(ColorUtil.Color color, int count) {
+        _tokens.put(color, _tokens.get(color) + count);
+    }
+
+    public void addTokens(int[] tokens) {
         for (int i = 0; i < tokens.length; i++) {
             if (tokens[i] != 0) {
-                _tokens.put(ColorUtil.getColorFromIndex(i), _tokens.get(ColorUtil.getColorFromIndex(i)) + tokens[i]);
+                addToken(ColorUtil.getColorFromIndex(i), tokens[i]);
             }
         }
     }
@@ -93,7 +97,7 @@ public class Player extends Role{
         UserInteractionUtil.printCardsInOneRow(_holdCards);
     }
 
-    private int getTotalScore() {
+    public int getTotalScore() {
         int totalScore = 0;
         for (Noble noble : _nobles) {
             totalScore += noble.getSore();

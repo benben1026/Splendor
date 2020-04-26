@@ -1,13 +1,14 @@
 package com.benben.splendor.gameItem;
 
+import com.benben.splendor.util.ColorUtil;
+
 import java.util.Map;
 
 public abstract class Item {
     int _score;
-    Map<Color, Integer> _price;
+    Map<ColorUtil.Color, Integer> _price;
 
-    public boolean canBuy(Map<Color, Integer> input) {
-        return _price.entrySet().stream().allMatch(
-                entry -> input.getOrDefault(entry.getKey(), 0).equals(entry.getValue()));
+    public int getSore() {
+        return _score;
     }
 }

@@ -1,22 +1,19 @@
 package com.benben.splendor.util;
 
 import com.benben.splendor.gameItem.Card;
-import com.benben.splendor.gameItem.Color;
 
-import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class GameInitUtil {
+public final class GameInitUtil {
 
-    private Map<Color, Integer> tokens;
+    private LinkedHashMap<ColorUtil.Color, Integer> tokens;
     private List<Card> cardsLevel1;
     private List<Card> cardsLevel2;
     private List<Card> cardsLevel3;
@@ -33,7 +30,7 @@ public class GameInitUtil {
         }
     }
 
-    public Map<Color, Integer> getTokens() {
+    public LinkedHashMap<ColorUtil.Color, Integer> getTokens() {
         return tokens;
     }
 

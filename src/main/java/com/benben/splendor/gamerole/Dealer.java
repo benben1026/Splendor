@@ -5,30 +5,27 @@ import com.benben.splendor.gameItem.Noble;
 import com.benben.splendor.util.ColorUtil;
 import com.benben.splendor.util.GameInitUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class Dealer extends Role{
 
-    private List<Noble> nobles;
+    private List<Noble> _nobles = new ArrayList<>();
 
-    private List<Card> _inVisibleCardsLevel1;
-    private List<Card> _inVisibleCardsLevel2;
-    private List<Card> _inVisibleCardsLevel3;
+    private List<Card> _invisibleCardsLevel1 = new ArrayList<>();
+    private List<Card> _invisibleCardsLevel2 = new ArrayList<>();
+    private List<Card> _invisibleCardsLevel3 = new ArrayList<>();
 
-    private List<Card> _VisibleCardsLevel1;
-    private List<Card> _VisibleCardsLevel2;
-    public List<Card> _VisibleCardsLevel3;
+    private List<Card> _visibleCardsLevel1 = new ArrayList<>();
+    private List<Card> _visibleCardsLevel2 = new ArrayList<>();
+    private List<Card> _visibleCardsLevel3 = new ArrayList<>();
 
 
     public Dealer(int numOfPlayers) {
         super("Bank");
-        GameInitUtil gameInitUtil = new GameInitUtil();
-        gameInitUtil.initGame(numOfPlayers);
-        _tokens = gameInitUtil.getTokens();
-        _inVisibleCardsLevel1 = gameInitUtil.getCardsLevel1();
-        _inVisibleCardsLevel2 = gameInitUtil.getCardsLevel2();
-        _inVisibleCardsLevel3 = gameInitUtil.getCardsLevel3();
+        GameInitUtil.initGame(numOfPlayers,_invisibleCardsLevel1, _invisibleCardsLevel2, _invisibleCardsLevel3, _nobles);
+
         initVisibleCards();
         int tokenCount;
         if (numOfPlayers == 2 || numOfPlayers == 3) {
@@ -44,7 +41,11 @@ public class Dealer extends Role{
         _tokens.put(ColorUtil.Color.YELLOW, 5);
     }
 
-    private void initVisibleCards() {}
+    private void initVisibleCards() {
+        _visibleCardsLevel1 = _invisibleCardsLevel1;
+        _visibleCardsLevel2 = _invisibleCardsLevel2;
+        _visibleCardsLevel3 = _invisibleCardsLevel3;
+    }
 
     public boolean sell(Map<ColorUtil.Color, Integer> tokens, Card card) {
         return false;
@@ -82,15 +83,15 @@ public class Dealer extends Role{
     }
 
     public List<Card> getVisibleCardsLevel1() {
-        return _VisibleCardsLevel1;
+        return _visibleCardsLevel1;
     }
 
     public List<Card> getVisibleCardsLevel2() {
-        return _VisibleCardsLevel2;
+        return _visibleCardsLevel2;
     }
 
     public List<Card> getVisibleCardsLevel3() {
-        return _VisibleCardsLevel3;
+        return _visibleCardsLevel3;
     }
 
     void printOneRowOfCard(List<Card> cards) {
@@ -113,6 +114,6 @@ public class Dealer extends Role{
     public void printCurrentStatus() {
         System.out.println(_name + ":");
         printToken();
-        printOneRowOfCard(_VisibleCardsLevel3);
+        printOneRowOfCard(_visibleCardsLevel3);
     }
 }

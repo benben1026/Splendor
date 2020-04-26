@@ -115,5 +115,7 @@ public class Dealer extends Role{
         System.out.println(_name + ":");
         printToken();
         printOneRowOfCard(_visibleCardsLevel3);
+        printOneRowOfCard(_visibleCardsLevel2);
+        printOneRowOfCard(_visibleCardsLevel1);
     }
 }

@@ -95,7 +95,7 @@ public class Dealer extends Role{
                 this.addToken(color, needTokenCount - diff);
             }
         }
-        player.buyCard(card);
+        player.takeCard(card);
     }
 
     public boolean requestToTakeTokens(int[] tokens) {

@@ -33,10 +33,6 @@ public class Player extends Role{
         return _cards;
     }
 
-    public void buyCard(Card card) {
-        _cards.get(card.getColor()).add(card);
-    }
-
     @Override
     public void printCurrentStatus() {
         System.out.println(_name + "  totalScore:" + getTotalScore());

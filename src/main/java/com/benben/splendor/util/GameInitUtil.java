@@ -25,19 +25,7 @@ public final class GameInitUtil {
         try (FileReader reader = new FileReader(path)) {
             JSONObject object = (JSONObject) jsonParser.parse(reader);
             initGameForNoble((JSONArray) object.get("0"), nobles);
-            switch (numOfPlayers) {
-                case 2:
-                    initGameForPlayers((JSONArray) object.get("2"), cardsLevel1, cardsLevel2, cardsLevel3);
-                    break;
-                case 3:
-                    initGameForPlayers((JSONArray) object.get("3"), cardsLevel1, cardsLevel2, cardsLevel3);
-                    break;
-                case 4:
-                    initGameForPlayers((JSONArray) object.get("4"), cardsLevel1, cardsLevel2, cardsLevel3);
-                    break;
-                default:
-                    break;
-            }
+            initGameForPlayers((JSONArray) object.get(numOfPlayers + ""), cardsLevel1, cardsLevel2, cardsLevel3);
         } catch (IOException | ParseException exception) {
             exception.printStackTrace();
         }

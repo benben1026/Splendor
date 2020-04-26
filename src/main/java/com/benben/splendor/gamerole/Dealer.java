@@ -8,6 +8,7 @@ import com.benben.splendor.util.GameInitUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Dealer extends Role{
 
@@ -25,7 +26,6 @@ public class Dealer extends Role{
     public Dealer(int numOfPlayers) {
         super("Bank");
         GameInitUtil.initGame(numOfPlayers,_invisibleCardsLevel1, _invisibleCardsLevel2, _invisibleCardsLevel3, _nobles);
-
         initVisibleCards();
         int tokenCount;
         if (numOfPlayers == 2 || numOfPlayers == 3) {
@@ -47,8 +47,55 @@ public class Dealer extends Role{
         _visibleCardsLevel3 = _invisibleCardsLevel3;
     }
 
-    public boolean sell(Map<ColorUtil.Color, Integer> tokens, Card card) {
-        return false;
+    public boolean requestToBuyCard(Player player, int index) {
+        int row = index / 4;
+        int col = index % 4;
+        Card cardToBuy;
+        if (row == 0) {
+            cardToBuy = _visibleCardsLevel3.get(col);
+        } else if (row == 1) {
+            cardToBuy = _visibleCardsLevel2.get(col);
+        } else if (row == 2) {
+            cardToBuy = _visibleCardsLevel1.get(col);
+        } else {
+            return false;
+        }
+        Map<ColorUtil.Color, Integer> cardsByCount = player.getCards().entrySet().stream().collect(
+                Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().size()));
+        if (!cardToBuy.affordable(player.getTokens(), cardsByCount)) {
+            return false;
+        }
+        buyCard(player, cardToBuy);
+        if (row == 0) {
+            _visibleCardsLevel3.remove(col);
+        } else if (row == 1) {
+            _visibleCardsLevel2.remove(col);
+        } else if (row == 2) {
+            _visibleCardsLevel1.remove(col);
+        }
+        return true;
+    }
+
+    public void buyCard(Player player, Card card) {
+        Map<ColorUtil.Color, Integer> cardsByCount = player.getCards().entrySet().stream().collect(
+                Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().size()));
+        for (Map.Entry<ColorUtil.Color, Integer> singleColorCost : card.getPrice().entrySet()) {
+            ColorUtil.Color color = singleColorCost.getKey();
+            int needTokenCount = singleColorCost.getValue() - cardsByCount.getOrDefault(color, 0);
+            if (needTokenCount <= player.getTokens().getOrDefault(color, 0)) {
+                // No need to use Star Token
+                player.getTokens().put(color, player.getTokens().getOrDefault(color, 0) - needTokenCount);
+                this.addToken(color, needTokenCount);
+            } else {
+                // Need to use Star Token
+                int diff = needTokenCount - player.getTokens().getOrDefault(color, 0);
+                player.getTokens().put(ColorUtil.Color.YELLOW, player.getTokens().get(ColorUtil.Color.YELLOW) - diff);
+                player.getTokens().put(color, 0);
+                this.addToken(ColorUtil.Color.YELLOW, diff);
+                this.addToken(color, needTokenCount - diff);
+            }
+        }
+        player.takeCard(card);
     }
 
     public boolean requestToTakeTokens(int[] tokens) {
@@ -80,6 +127,10 @@ public class Dealer extends Role{
             }
         }
         return true;
+    }
+
+    public void addToken(ColorUtil.Color color, int count) {
+        _tokens.put(color, _tokens.get(color) + count);
     }
 
     public List<Card> getVisibleCardsLevel1() {

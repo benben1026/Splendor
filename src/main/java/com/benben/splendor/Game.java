@@ -37,6 +37,7 @@ public class Game {
                 _currentPlayerIndex ++;
             }
             _currentPlayerIndex = 0;
+            round ++;
         } while (checkWinner() < 0);
         
     }
@@ -66,13 +67,16 @@ public class Game {
     }
 
     private void playerRound(Player player) {
-        int selection = UserInteractionUtil.askIntInput(SYSTEM_INPUT, "Please choose your action:\n(1)Take tokens;\n(2)Buy card;\n(3)Hold card;\n",
-                (input) -> input >=1 && input <= 3);
+        int selection = UserInteractionUtil.askIntInput(SYSTEM_INPUT,
+                "Please choose your action:\n(1)Take tokens;\n(2)Buy card;\n(3)Hold card;\n(4)Pass\n",
+                (input) -> input >=1 && input <= 4);
         switch (selection){
             case 1:
                 takeTokens(player);
                 break;
             case 2:
+                buyCard(player);
+                break;
             case 3:
             default:
                 break;
@@ -101,6 +105,11 @@ public class Game {
 //        if (player.validateNumOfTokens()) {
 //            return;
 //        }
+    }
+
+    private void buyCard(Player player) {
+        UserInteractionUtil.askIntInput(SYSTEM_INPUT, "Please choose the card you want to buy ( 1-12 )",
+                (input) -> _dealer.requestToBuyCard(player, input - 1));
     }
 
 

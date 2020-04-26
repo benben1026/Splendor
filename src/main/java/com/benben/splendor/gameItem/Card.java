@@ -1,5 +1,6 @@
 package com.benben.splendor.gameItem;
 
+import com.benben.splendor.gamerole.Player;
 import com.benben.splendor.util.ColorUtil;
 import com.benben.splendor.util.UserInteractionUtil;
 
@@ -16,6 +17,18 @@ public class Card extends Item{
         _color = color;
         _score = score;
         _price = price;
+    }
+
+    public boolean affordable(Map<ColorUtil.Color, Integer> tokens, Map<ColorUtil.Color, Integer> cards) {
+        int balance = 0;
+        for (Map.Entry<ColorUtil.Color, Integer> singleColorCost : _price.entrySet()) {
+            ColorUtil.Color color = singleColorCost.getKey();
+            int owned = tokens.getOrDefault(color, 0) + cards.getOrDefault(color, 0);
+            if (owned < singleColorCost.getValue()) {
+                balance += singleColorCost.getValue() - owned;
+            }
+        }
+        return balance <= tokens.getOrDefault(ColorUtil.Color.YELLOW, 0);
     }
 
     public List<String> print() {

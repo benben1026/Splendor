@@ -9,15 +9,16 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Player extends Role{
 
     LinkedHashMap<ColorUtil.Color, List<Card>> _cards;
+    List<Card> _holdCards;
     List<Noble> _nobles;
 
     public Player(String name) {
         super(name);
+        _holdCards = new ArrayList<>();
         _cards = new LinkedHashMap<>();
         for (int i = 0; i < ColorUtil.COLOR_COUNT; i++) {
             _cards.put(ColorUtil.getColorFromIndex(i), new ArrayList<>());
@@ -26,24 +27,38 @@ public class Player extends Role{
         for (int i = 0; i < 5; i++) {
             _cards.put(ColorUtil.getColorFromIndex(i), new ArrayList<>());
         }
+    }
 
+    public List<Card> getHoldCards() {
+        return _holdCards;
     }
 
     public LinkedHashMap<ColorUtil.Color, List<Card>> getCards() {
         return _cards;
     }
 
+    public void addHoldCard(Card card) {
+        _holdCards.add(card);
+    }
+
     @Override
-    public void printCurrentStatus() {
+    public void printCurrentStatus(boolean myTurn) {
         System.out.println(_name + "  totalScore:" + getTotalScore());
         printToken();
         printCards();
+        if (myTurn) {
+            printHoldCards();
+        }
     }
 
-    public void takeTokens(int[] tokens) {
+    public void addToken(ColorUtil.Color color, int count) {
+        _tokens.put(color, _tokens.get(color) + count);
+    }
+
+    public void addTokens(int[] tokens) {
         for (int i = 0; i < tokens.length; i++) {
             if (tokens[i] != 0) {
-                _tokens.put(ColorUtil.getColorFromIndex(i), _tokens.get(ColorUtil.getColorFromIndex(i)) + tokens[i]);
+                addToken(ColorUtil.getColorFromIndex(i), tokens[i]);
             }
         }
     }
@@ -61,9 +76,8 @@ public class Player extends Role{
     }
 
     private void printCards() {
-        int cardHeight = 3;
-        String[] output = new String[cardHeight];
-        for (int i = 0; i < cardHeight; i++) {
+        String[] output = new String[Card.CARD_FOLD_HEIGHT];
+        for (int i = 0; i < Card.CARD_FOLD_HEIGHT; i++) {
             output[i] = String.format("%3s", " ");
         }
         for (int i = 0; i < ColorUtil.COLOR_COUNT; i++) {
@@ -75,7 +89,15 @@ public class Player extends Role{
         System.out.println(String.join("\n", output));
     }
 
-    private int getTotalScore() {
+    private void printHoldCards() {
+        if (_holdCards.isEmpty()) {
+            return;
+        }
+        System.out.println("Hold Cards");
+        UserInteractionUtil.printCardsInOneRow(_holdCards);
+    }
+
+    public int getTotalScore() {
         int totalScore = 0;
         for (Noble noble : _nobles) {
             totalScore += noble.getSore();

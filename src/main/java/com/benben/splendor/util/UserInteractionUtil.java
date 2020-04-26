@@ -1,5 +1,7 @@
 package com.benben.splendor.util;
 
+import com.benben.splendor.gameItem.Card;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -64,40 +66,80 @@ public final class UserInteractionUtil {
         System.out.println(String.join("\n", output));
     }
 
-    public static int askIntInput(Scanner scanner, String message, Predicate<Integer> ifValid) {
+    public static void printCardsInOneRow(List<Card> cards) {
+        String[] output = new String[Card.CARD_FULL_HEIGHT];
+        for (int i = 0; i < output.length; i++) {
+            output[i] = "";
+        }
+
+        for (Card card : cards) {
+            List<String> cardString = card.toListOfString();
+            for (int i = 0; i < cardString.size(); i++) {
+                output[i] += "\t" + cardString.get(i);
+            }
+        }
+
+        System.out.println(String.join("\n", output));
+    }
+
+    public static int askIntInput(Scanner scanner, String message, Predicate<Integer> validator) {
         int input;
         while (true) {
-            System.out.print(message);
-            try{
-                input = scanner.nextInt();
-            } catch (Exception e) {
-                System.out.println("Invalid input.");
-                scanner.nextLine();
+            try {
+                input = askIntInputOnce(scanner, message, validator);
+            } catch (InvalidInputException ex) {
                 continue;
             }
-            if (ifValid.test(input)) {
-                break;
-            }
-            System.out.println("Invalid input.");
+            break;
         }
         return input;
     }
 
-    public static String askStringInput(Scanner scanner, String message, Predicate<String> ifValid) {
+    public static int askIntInputOnce(Scanner scanner, String message, Predicate<Integer> validator)
+            throws InvalidInputException {
+        int input;
+        System.out.print(message);
+        try{
+            input = scanner.nextInt();
+        } catch (Exception e) {
+            System.out.println("Invalid input.");
+            scanner.nextLine();
+            throw new InvalidInputException();
+        }
+        if (!validator.test(input)) {
+            System.out.println("Invalid input.");
+            throw new InvalidInputException();
+        }
+        return input;
+    }
+
+    public static String askStringInput(Scanner scanner, String message, Predicate<String> validator) {
         String input;
         while (true) {
-            System.out.print(message);
-            try{
-                input = scanner.next();
-            } catch (Exception e) {
-                System.out.println("Invalid input.");
-                scanner.nextLine();
+            try {
+                input = askStringInputOnce(scanner, message, validator);
+            } catch (InvalidInputException ex) {
                 continue;
             }
-            if (ifValid.test(input)) {
-                break;
-            }
+            break;
+        }
+        return input;
+    }
+
+    public static String askStringInputOnce(Scanner scanner, String message, Predicate<String> validator)
+            throws InvalidInputException {
+        String input;
+        System.out.print(message);
+        try{
+            input = scanner.next();
+        } catch (Exception e) {
             System.out.println("Invalid input.");
+            scanner.nextLine();
+            throw new InvalidInputException();
+        }
+        if (!validator.test(input)) {
+            System.out.println("Invalid input.");
+            throw new InvalidInputException();
         }
         return input;
     }

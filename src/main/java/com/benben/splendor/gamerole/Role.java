@@ -24,7 +24,7 @@ public abstract class Role {
         _tokens.put(ColorUtil.Color.YELLOW, 0);
     }
 
-    public abstract void printCurrentStatus();
+    public abstract void printCurrentStatus(boolean myTurn);
 
     public String getName() {
         return _name;

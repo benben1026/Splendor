@@ -1,10 +1,9 @@
 package com.benben.splendor;
 
-import com.benben.splendor.gameItem.Card;
 import com.benben.splendor.gamerole.CPU;
 import com.benben.splendor.gamerole.Dealer;
 import com.benben.splendor.gamerole.Player;
-import com.benben.splendor.util.ColorUtil;
+import com.benben.splendor.util.InvalidInputException;
 import com.benben.splendor.util.UserInteractionUtil;
 
 import java.util.*;
@@ -26,7 +25,12 @@ public class Game {
 
         do {
             while (_currentPlayerIndex < _numOfHumanPlayers + _numOfCPUs) {
-                printTable(round);
+                // Print game status
+                UserInteractionUtil.printHeader(round);
+                _dealer.printCurrentStatus(false);
+                for (int i = 0; i < _players.size(); i++) {
+                    _players.get(i).printCurrentStatus(i == _currentPlayerIndex);
+                }
                 Player currentPlayer = _players.get(_currentPlayerIndex);
                 System.out.println("It is " + currentPlayer.getName() + "'s turn.");
                 if (currentPlayer instanceof CPU) {
@@ -38,7 +42,7 @@ public class Game {
             }
             _currentPlayerIndex = 0;
             round ++;
-        } while (checkWinner() < 0);
+        } while (checkWinner() == null);
         
     }
 
@@ -55,45 +59,64 @@ public class Game {
 
     }
 
-    private int checkWinner() {
-        return -1;
-    }
+    private Player checkWinner() {
+        Player player = _players.stream().max(Comparator.comparingInt(Player::getTotalScore)).get();
+        if (player == null) {
+            return null;
+        }
+        System.out.println(player.getName() + " has the highest score: " + player.getTotalScore());
 
-    private void printTable(int round) {
-        UserInteractionUtil.printHeader(round);
-        _dealer.printCurrentStatus();
-        _players.forEach(Player::printCurrentStatus);
-
+        if (player.getTotalScore() >= _targetScore) {
+            System.out.println("Congratulations " + player.getName() + ", you win the game with highest score: "
+                    + player.getTotalScore());
+            _players.forEach(p1 -> System.out.println(p1.getName() + " score = " + p1.getTotalScore()));
+            return player;
+        }
+        return null;
     }
 
     private void playerRound(Player player) {
-        int selection = UserInteractionUtil.askIntInput(SYSTEM_INPUT,
-                "Please choose your action:\n(1)Take tokens;\n(2)Buy card;\n(3)Hold card;\n(4)Pass\n",
-                (input) -> input >=1 && input <= 4);
-        switch (selection){
-            case 1:
-                takeTokens(player);
-                break;
-            case 2:
-                buyCard(player);
-                break;
-            case 3:
-            default:
-                break;
+        while(true) {
+            try {
+                int selection = UserInteractionUtil.askIntInput(SYSTEM_INPUT,
+                        "Please choose your action:\n(1)Take tokens;\n(2)Buy card;\n"
+                                + "(3)Hold card;\n(4)Buy hold card;\n(5)Pass\n",
+                        (input) -> input >=1 && input <= 5);
+                switch (selection){
+                    case 1:
+                        takeTokens(player);
+                        break;
+                    case 2:
+                        buyCard(player);
+                        break;
+                    case 3:
+                        holdCard(player);
+                        break;
+                    case 4:
+                        buyHoldCard(player);
+                        break;
+                    default:
+                        break;
+                }
+            } catch (InvalidInputException ex) {
+                continue;
+            }
+            break;
         }
+
     }
 
     private void cpuRound(CPU cpu) {
 
     }
 
-    private void takeTokens(Player player) {
-        UserInteractionUtil.askStringInput(SYSTEM_INPUT, "Please choose the number of tokens you want to take(White, Blue, Green, Red, Black), separate by \",\":\n",
+    private void takeTokens(Player player) throws InvalidInputException {
+        UserInteractionUtil.askStringInputOnce(SYSTEM_INPUT, "Please choose the number of tokens you want to take(White, Blue, Green, Red, Black), separate by \",\":\n",
                 (input) -> {
                     try {
                         int[] inputTokens = Arrays.stream(input.split(",")).mapToInt(Integer::parseInt).toArray();
                         if (_dealer.requestToTakeTokens(inputTokens)) {
-                            player.takeTokens(inputTokens);
+                            player.addTokens(inputTokens);
                             return true;
                         }
                         return false;
@@ -107,9 +130,19 @@ public class Game {
 //        }
     }
 
-    private void buyCard(Player player) {
-        UserInteractionUtil.askIntInput(SYSTEM_INPUT, "Please choose the card you want to buy ( 1-12 )",
+    private void buyCard(Player player) throws InvalidInputException {
+        UserInteractionUtil.askIntInputOnce(SYSTEM_INPUT, "Please choose the card you want to buy ( 1-12 )",
                 (input) -> _dealer.requestToBuyCard(player, input - 1));
+    }
+
+    private void holdCard(Player player) throws InvalidInputException {
+        UserInteractionUtil.askIntInputOnce(SYSTEM_INPUT, "Please choose the card you want to hold ( 1-12 )",
+                (input) -> _dealer.requestToHoldCard(player, input - 1));
+    }
+
+    private void buyHoldCard(Player player) throws InvalidInputException {
+        UserInteractionUtil.askIntInputOnce(SYSTEM_INPUT, "Please choose the card you want to buy ( 1-3 )",
+                (input) -> _dealer.requestToBuyHoldCard(player, input - 1));
     }
 
 

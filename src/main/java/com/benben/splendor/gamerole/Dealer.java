@@ -4,6 +4,7 @@ import com.benben.splendor.gameItem.Card;
 import com.benben.splendor.gameItem.Noble;
 import com.benben.splendor.util.ColorUtil;
 import com.benben.splendor.util.GameInitUtil;
+import com.benben.splendor.util.UserInteractionUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,17 +48,73 @@ public class Dealer extends Role{
         _visibleCardsLevel3 = _invisibleCardsLevel3;
     }
 
-    public boolean requestToBuyCard(Player player, int index) {
+    private Card getCardFromIndex(int index) {
         int row = index / 4;
         int col = index % 4;
-        Card cardToBuy;
-        if (row == 0) {
-            cardToBuy = _visibleCardsLevel3.get(col);
-        } else if (row == 1) {
-            cardToBuy = _visibleCardsLevel2.get(col);
-        } else if (row == 2) {
-            cardToBuy = _visibleCardsLevel1.get(col);
-        } else {
+        try {
+            if (row == 0) {
+                return _visibleCardsLevel3.get(col);
+            } else if (row == 1) {
+                return _visibleCardsLevel2.get(col);
+            } else if (row == 2) {
+                return _visibleCardsLevel1.get(col);
+            } else {
+                return null;
+            }
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    private Card removeCardFromIndex(int index) {
+        int row = index / 4;
+        int col = index % 4;
+        try {
+            if (row == 0) {
+                return _visibleCardsLevel3.remove(col);
+            } else if (row == 1) {
+                return _visibleCardsLevel2.remove(col);
+            } else if (row == 2) {
+                return _visibleCardsLevel1.remove(col);
+            } else {
+                return null;
+            }
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public boolean requestToBuyHoldCard(Player player, int index) {
+        if (player.getHoldCards().size() == 0 || index > player.getHoldCards().size()) {
+            return false;
+        }
+        Card cardToBuy = player.getHoldCards().get(index);
+        Map<ColorUtil.Color, Integer> cardsByCount = player.getCards().entrySet().stream().collect(
+                Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().size()));
+        if (!cardToBuy.affordable(player.getTokens(), cardsByCount)) {
+            return false;
+        }
+        buyCard(player, cardToBuy);
+        player.getHoldCards().remove(index);
+        return true;
+    }
+
+    public boolean requestToHoldCard(Player player, int index) {
+        if (player.getHoldCards().size() >= 3) {
+            return false;
+        }
+        player.addHoldCard(removeCardFromIndex(index));
+        if (_tokens.get(ColorUtil.Color.YELLOW) > 0) {
+            player.addToken(ColorUtil.Color.YELLOW, 1);
+            _tokens.put(ColorUtil.Color.YELLOW, _tokens.get(ColorUtil.Color.YELLOW) - 1);
+            // Todo: check the total number of tokens does not exceed 10
+        }
+        return true;
+    }
+
+    public boolean requestToBuyCard(Player player, int index) {
+        Card cardToBuy = getCardFromIndex(index);
+        if (cardToBuy == null) {
             return false;
         }
         Map<ColorUtil.Color, Integer> cardsByCount = player.getCards().entrySet().stream().collect(
@@ -66,13 +123,7 @@ public class Dealer extends Role{
             return false;
         }
         buyCard(player, cardToBuy);
-        if (row == 0) {
-            _visibleCardsLevel3.remove(col);
-        } else if (row == 1) {
-            _visibleCardsLevel2.remove(col);
-        } else if (row == 2) {
-            _visibleCardsLevel1.remove(col);
-        }
+        removeCardFromIndex(index);
         return true;
     }
 
@@ -145,28 +196,12 @@ public class Dealer extends Role{
         return _visibleCardsLevel3;
     }
 
-    void printOneRowOfCard(List<Card> cards) {
-        String[] output = new String[Card.CARD_LENGTH];
-        for (int i = 0; i < output.length; i++) {
-            output[i] = "";
-        }
-
-        for (Card card : cards) {
-            List<String> cardString = card.print();
-            for (int i = 0; i < cardString.size(); i++) {
-                output[i] += "\t" + cardString.get(i);
-            }
-        }
-
-        System.out.println(String.join("\n", output));
-    }
-
     @Override
-    public void printCurrentStatus() {
+    public void printCurrentStatus(boolean myTurn) {
         System.out.println(_name + ":");
         printToken();
-        printOneRowOfCard(_visibleCardsLevel3);
-        printOneRowOfCard(_visibleCardsLevel2);
-        printOneRowOfCard(_visibleCardsLevel1);
+        UserInteractionUtil.printCardsInOneRow(_visibleCardsLevel3);
+        UserInteractionUtil.printCardsInOneRow(_visibleCardsLevel2);
+        UserInteractionUtil.printCardsInOneRow(_visibleCardsLevel1);
     }
 }

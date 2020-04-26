@@ -72,6 +72,7 @@ public final class UserInteractionUtil {
                 input = scanner.nextInt();
             } catch (Exception e) {
                 System.out.println("Invalid input.");
+                scanner.nextLine();
                 continue;
             }
             if (ifValid.test(input)) {
@@ -90,6 +91,7 @@ public final class UserInteractionUtil {
                 input = scanner.next();
             } catch (Exception e) {
                 System.out.println("Invalid input.");
+                scanner.nextLine();
                 continue;
             }
             if (ifValid.test(input)) {

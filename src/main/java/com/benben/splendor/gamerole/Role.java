@@ -30,6 +30,10 @@ public abstract class Role {
         return _name;
     }
 
+    public LinkedHashMap<ColorUtil.Color, Integer> getTokens() {
+        return _tokens;
+    }
+
     void printToken() {
         List<String> output = new ArrayList<>();
         output.add(UserInteractionUtil.ANSI_YELLOW + "#:" + _tokens.get(ColorUtil.Color.YELLOW) + UserInteractionUtil.ANSI_RESET);

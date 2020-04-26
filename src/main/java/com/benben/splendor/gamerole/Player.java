@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Player extends Role{
 
@@ -26,6 +27,14 @@ public class Player extends Role{
             _cards.put(ColorUtil.getColorFromIndex(i), new ArrayList<>());
         }
 
+    }
+
+    public LinkedHashMap<ColorUtil.Color, List<Card>> getCards() {
+        return _cards;
+    }
+
+    public void buyCard(Card card) {
+        _cards.get(card.getColor()).add(card);
     }
 
     @Override
@@ -49,6 +58,10 @@ public class Player extends Role{
             totalCount += entry.getValue();
         }
         return totalCount <= 10;
+    }
+
+    public void takeCard(Card card) {
+        _cards.get(card.getColor()).add(card);
     }
 
     private void printCards() {

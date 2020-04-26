@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Card extends Item{
-    public static final int CARD_LENGTH = 8;
+    public static final int CARD_FULL_HEIGHT = 8;
+    public static final int CARD_FOLD_HEIGHT = 3;
 
     private final ColorUtil.Color _color;
 
@@ -31,7 +32,7 @@ public class Card extends Item{
         return balance <= tokens.getOrDefault(ColorUtil.Color.YELLOW, 0);
     }
 
-    public List<String> print() {
+    public List<String> toListOfString() {
         List<String> output = new ArrayList<>();
         output.add(UserInteractionUtil.getPrintableColor(_color) + "_________"  + UserInteractionUtil.ANSI_RESET);
         output.add(UserInteractionUtil.getPrintableColor(_color) + String.format("|%7s|", _color.toString()) + UserInteractionUtil.ANSI_RESET);

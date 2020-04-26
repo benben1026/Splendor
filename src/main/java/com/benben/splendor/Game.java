@@ -26,7 +26,12 @@ public class Game {
 
         do {
             while (_currentPlayerIndex < _numOfHumanPlayers + _numOfCPUs) {
-                printTable(round);
+                // Print game status
+                UserInteractionUtil.printHeader(round);
+                _dealer.printCurrentStatus(false);
+                for (int i = 0; i < _players.size(); i++) {
+                    _players.get(i).printCurrentStatus(i == _currentPlayerIndex);
+                }
                 Player currentPlayer = _players.get(_currentPlayerIndex);
                 System.out.println("It is " + currentPlayer.getName() + "'s turn.");
                 if (currentPlayer instanceof CPU) {
@@ -59,17 +64,11 @@ public class Game {
         return -1;
     }
 
-    private void printTable(int round) {
-        UserInteractionUtil.printHeader(round);
-        _dealer.printCurrentStatus();
-        _players.forEach(Player::printCurrentStatus);
-
-    }
-
     private void playerRound(Player player) {
         int selection = UserInteractionUtil.askIntInput(SYSTEM_INPUT,
-                "Please choose your action:\n(1)Take tokens;\n(2)Buy card;\n(3)Hold card;\n(4)Pass\n",
-                (input) -> input >=1 && input <= 4);
+                "Please choose your action:\n(1)Take tokens;\n(2)Buy card;\n"
+                        + "(3)Hold card;\n(4)Buy hold card;\n(5)Pass\n",
+                (input) -> input >=1 && input <= 5);
         switch (selection){
             case 1:
                 takeTokens(player);
@@ -78,6 +77,11 @@ public class Game {
                 buyCard(player);
                 break;
             case 3:
+                holdCard(player);
+                break;
+            case 4:
+                buyHoldCard(player);
+                break;
             default:
                 break;
         }
@@ -110,6 +114,16 @@ public class Game {
     private void buyCard(Player player) {
         UserInteractionUtil.askIntInput(SYSTEM_INPUT, "Please choose the card you want to buy ( 1-12 )",
                 (input) -> _dealer.requestToBuyCard(player, input - 1));
+    }
+
+    private void holdCard(Player player) {
+        UserInteractionUtil.askIntInput(SYSTEM_INPUT, "Please choose the card you want to hold ( 1-12 )",
+                (input) -> _dealer.requestToHoldCard(player, input - 1));
+    }
+
+    private void buyHoldCard(Player player) {
+        UserInteractionUtil.askIntInput(SYSTEM_INPUT, "Please choose the card you want to buy ( 1-3 )",
+                (input) -> _dealer.requestToBuyHoldCard(player, input - 1));
     }
 
 

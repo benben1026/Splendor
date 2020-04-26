@@ -1,5 +1,7 @@
 package com.benben.splendor.util;
 
+import com.benben.splendor.gameItem.Card;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -61,6 +63,22 @@ public final class UserInteractionUtil {
             }
             output.add(sb.toString());
         }
+        System.out.println(String.join("\n", output));
+    }
+
+    public static void printCardsInOneRow(List<Card> cards) {
+        String[] output = new String[Card.CARD_FULL_HEIGHT];
+        for (int i = 0; i < output.length; i++) {
+            output[i] = "";
+        }
+
+        for (Card card : cards) {
+            List<String> cardString = card.toListOfString();
+            for (int i = 0; i < cardString.size(); i++) {
+                output[i] += "\t" + cardString.get(i);
+            }
+        }
+
         System.out.println(String.join("\n", output));
     }
 

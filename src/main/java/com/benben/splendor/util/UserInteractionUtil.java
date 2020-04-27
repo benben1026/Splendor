@@ -1,6 +1,6 @@
 package com.benben.splendor.util;
 
-import com.benben.splendor.gameItem.Card;
+import com.benben.splendor.gameItem.Item;
 
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -101,13 +101,13 @@ public final class UserInteractionUtil {
         System.out.println(String.join("\n", output));
     }
 
-    public static void printCardsInOneRow(List<Card> cards) {
-        String[] output = new String[Card.CARD_FULL_HEIGHT];
+    public static void printItemsInOneRow(List<? extends Item> items) {
+        String[] output = new String[items.get(0).FULL_HEIGHT];
         for (int i = 0; i < output.length; i++) {
             output[i] = "";
         }
 
-        for (Card card : cards) {
+        for (Item card : items) {
             List<String> cardString = card.toListOfString();
             for (int i = 0; i < cardString.size(); i++) {
                 output[i] += "\t" + cardString.get(i);
@@ -115,6 +115,12 @@ public final class UserInteractionUtil {
         }
 
         OUT.println(String.join("\n", output));
+    }
+
+    public static String getBorder(String colorCode) {
+        return colorCode
+                + UserInteractionUtil.VERTICAL
+                + UserInteractionUtil.ANSI_RESET;
     }
 
     public static int askIntInput(Scanner scanner, String message, Predicate<Integer> validator) {

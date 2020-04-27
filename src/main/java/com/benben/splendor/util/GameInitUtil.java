@@ -34,8 +34,7 @@ public final class GameInitUtil {
     private static void initGameForNoble(JSONArray array, List<Noble> nobles) {
         for(int i = 0; i < array.size(); i++) {
             JSONObject object = (JSONObject) array.get(i);
-            Map<ColorUtil.Color, Integer> priceMap = new HashMap<>();
-            convertPricesToMap((JSONObject) object.get("price"), priceMap);
+            Map<ColorUtil.Color, Integer> priceMap = getPricesToMap((JSONObject) object.get("price"));
 
             Noble noble = new Noble(priceMap);
             nobles.add(noble);
@@ -55,17 +54,21 @@ public final class GameInitUtil {
             ColorUtil.Color color = ColorUtil.Color.valueOf((String) object.get("color"));
             Integer score = Integer.valueOf((String) object.get("score"));
 
-            Map<ColorUtil.Color, Integer> pricesMap = new HashMap<>();
             JSONObject prices = (JSONObject) object.get("price");
-            convertPricesToMap(prices, pricesMap);
-            Card card = new Card(color, score, pricesMap);
+            Map<ColorUtil.Color, Integer> priceMap = getPricesToMap(prices);
+            Card card = new Card(color, score, priceMap);
             cards.add(card);
         }
     }
 
-    private static void convertPricesToMap(JSONObject prices, Map<ColorUtil.Color, Integer> pricesMap) {
-        for (String str : (Set<String>) prices.keySet()) {
-            pricesMap.put(ColorUtil.Color.valueOf(str), Integer.valueOf((String) prices.get(str)));
+    private static LinkedHashMap<ColorUtil.Color, Integer> getPricesToMap(JSONObject prices) {
+        LinkedHashMap<ColorUtil.Color, Integer> priceMap = new LinkedHashMap<>();
+        for (int i = 0; i < ColorUtil.COLOR_COUNT; i++) {
+            priceMap.put(ColorUtil.getColorFromIndex(i), 0);
         }
+        for (String str : (Set<String>) prices.keySet()) {
+            priceMap.put(ColorUtil.Color.valueOf(str), Integer.valueOf((String) prices.get(str)));
+        }
+        return priceMap;
     }
 }

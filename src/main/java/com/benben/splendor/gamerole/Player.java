@@ -102,13 +102,13 @@ public class Player extends Role{
             return;
         }
         System.out.println("Hold Cards");
-        UserInteractionUtil.printCardsInOneRow(_holdCards);
+        UserInteractionUtil.printItemsInOneRow(_holdCards);
     }
 
     public int getTotalScore() {
         int totalScore = 0;
         for (Noble noble : _nobles) {
-            totalScore += noble.getSore();
+            totalScore += noble.getScore();
         }
         for (Map.Entry<ColorUtil.Color, List<Card>> entry : _cards.entrySet()) {
             for (Card card : entry.getValue()) {

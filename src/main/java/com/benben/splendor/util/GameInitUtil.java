@@ -25,7 +25,7 @@ public final class GameInitUtil {
         try (FileReader reader = new FileReader(path)) {
             JSONObject object = (JSONObject) jsonParser.parse(reader);
             initGameForNoble((JSONArray) object.get("0"), nobles);
-            initGameForPlayers((JSONArray) object.get(numOfPlayers + ""), cardsLevel1, cardsLevel2, cardsLevel3);
+            initGameForPlayers((JSONArray) object.get("1"), cardsLevel1, cardsLevel2, cardsLevel3);
         } catch (IOException | ParseException exception) {
             exception.printStackTrace();
         }

@@ -43,9 +43,17 @@ public class Dealer extends Role{
     }
 
     private void initVisibleCards() {
-        _visibleCardsLevel1 = _invisibleCardsLevel1;
-        _visibleCardsLevel2 = _invisibleCardsLevel2;
-        _visibleCardsLevel3 = _invisibleCardsLevel3;
+        getRandomCardsFromInvisibleCards(_invisibleCardsLevel1, _visibleCardsLevel1, 4);
+        getRandomCardsFromInvisibleCards(_invisibleCardsLevel2, _visibleCardsLevel2, 4);
+        getRandomCardsFromInvisibleCards(_invisibleCardsLevel3, _visibleCardsLevel3, 4);
+    }
+
+    private void getRandomCardsFromInvisibleCards(List<Card> invisible, List<Card> visible, int num) {
+        while(num > 0) {
+            int index = (int) (Math.random() * invisible.size());
+            visible.add(invisible.remove(index));
+            num --;
+        }
     }
 
     private Card getCardFromIndex(int index) {

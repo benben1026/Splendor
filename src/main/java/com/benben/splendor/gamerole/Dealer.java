@@ -199,9 +199,10 @@ public class Dealer extends Role{
     @Override
     public void printCurrentStatus(boolean myTurn) {
         System.out.println(_name + ":");
+        UserInteractionUtil.printItemsInOneRow(_nobles);
         printToken();
-        UserInteractionUtil.printCardsInOneRow(_visibleCardsLevel3);
-        UserInteractionUtil.printCardsInOneRow(_visibleCardsLevel2);
-        UserInteractionUtil.printCardsInOneRow(_visibleCardsLevel1);
+        UserInteractionUtil.printItemsInOneRow(_visibleCardsLevel3);
+        UserInteractionUtil.printItemsInOneRow(_visibleCardsLevel2);
+        UserInteractionUtil.printItemsInOneRow(_visibleCardsLevel1);
     }
 }

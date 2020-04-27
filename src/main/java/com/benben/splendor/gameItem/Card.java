@@ -1,6 +1,5 @@
 package com.benben.splendor.gameItem;
 
-import com.benben.splendor.gamerole.Player;
 import com.benben.splendor.util.ColorUtil;
 import com.benben.splendor.util.UserInteractionUtil;
 
@@ -9,15 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 public class Card extends Item{
-    public static final int CARD_FULL_HEIGHT = 8;
     public static final int CARD_FOLD_HEIGHT = 3;
 
     private final ColorUtil.Color _color;
 
     public Card(ColorUtil.Color color, int score, Map<ColorUtil.Color, Integer> price) {
+        super(price, score);
         _color = color;
-        _score = score;
-        _price = price;
+        FULL_HEIGHT = 8;
     }
 
     public boolean affordable(Map<ColorUtil.Color, Integer> tokens, Map<ColorUtil.Color, Integer> cards) {
@@ -32,6 +30,7 @@ public class Card extends Item{
         return balance <= tokens.getOrDefault(ColorUtil.Color.YELLOW, 0);
     }
 
+    @Override
     public List<String> toListOfString() {
         List<String> output = new ArrayList<>();
         output.add(UserInteractionUtil.getPrintableColor(_color)
@@ -63,20 +62,10 @@ public class Card extends Item{
     }
 
     private String getBorder(ColorUtil.Color color) {
-        return UserInteractionUtil.getPrintableColor(color)
-                + UserInteractionUtil.VERTICAL
-                + UserInteractionUtil.ANSI_RESET;
+        return UserInteractionUtil.getBorder(UserInteractionUtil.getPrintableColor(color));
     }
 
     public ColorUtil.Color getColor() {
         return _color;
-    }
-
-    public int getScore() {
-        return _score;
-    }
-
-    public Map<ColorUtil.Color, Integer> getPrice() {
-        return _price;
     }
 }

@@ -1,6 +1,5 @@
 package com.benben.splendor.gamerole;
 
-import com.benben.splendor.gameItem.Card;
 import com.benben.splendor.util.ColorUtil;
 import com.benben.splendor.util.UserInteractionUtil;
 

@@ -2,6 +2,8 @@ package com.benben.splendor.util;
 
 import com.benben.splendor.gameItem.Card;
 
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,6 +19,23 @@ public final class UserInteractionUtil {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
+
+    public static final PrintStream OUT;
+    public static final char TOP_LEFT = '\u250F';
+    public static final char TOP_RIGHT = '\u2513';
+    public static final char BOTTOM_LEFT = '\u2517';
+    public static final char BOTTOM_RIGHT = '\u251B';
+    public static final char HORIZONTAL = '\u2501';
+    public static final char VERTICAL = '\u2503';
+
+
+    static {
+        try {
+            OUT = new PrintStream(System.out, true, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static String getPrintableColor(ColorUtil.Color color) {
         switch (color) {
@@ -35,6 +54,22 @@ public final class UserInteractionUtil {
             default:
                 return "Invalid Color";
         }
+    }
+
+    public static String getPrintableCardUpperBorder(int length) {
+        String output = "";
+        for (int i = 0; i < length - 2; i++) {
+            output += HORIZONTAL;
+        }
+        return TOP_LEFT + output + TOP_RIGHT;
+    }
+
+    public static String getPrintableCardLowerBorder(int length) {
+        String output = "";
+        for (int i = 0; i < length - 2; i++) {
+            output += HORIZONTAL;
+        }
+        return BOTTOM_LEFT + output + BOTTOM_RIGHT;
     }
 
     public static void printHeader(int round) {
@@ -79,7 +114,7 @@ public final class UserInteractionUtil {
             }
         }
 
-        System.out.println(String.join("\n", output));
+        OUT.println(String.join("\n", output));
     }
 
     public static int askIntInput(Scanner scanner, String message, Predicate<Integer> validator) {

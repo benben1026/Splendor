@@ -82,9 +82,17 @@ public class Player extends Role{
         }
         for (int i = 0; i < ColorUtil.COLOR_COUNT; i++) {
             ColorUtil.Color color = ColorUtil.getColorFromIndex(i);
-            output[0] += "    " + UserInteractionUtil.getPrintableColor(color) + "___" + UserInteractionUtil.ANSI_RESET;
-            output[1] += "    " + UserInteractionUtil.getPrintableColor(color) + "|" + _cards.get(color).size() + "|" + UserInteractionUtil.ANSI_RESET;
-            output[2] += "    " + UserInteractionUtil.getPrintableColor(color) + "___" + UserInteractionUtil.ANSI_RESET;
+            output[0] += "    " + UserInteractionUtil.getPrintableColor(color)
+                    + UserInteractionUtil.getPrintableCardUpperBorder(3)
+                    + UserInteractionUtil.ANSI_RESET;
+            output[1] += "    " + UserInteractionUtil.getPrintableColor(color)
+                    + UserInteractionUtil.VERTICAL
+                    + _cards.get(color).size()
+                    + UserInteractionUtil.VERTICAL
+                    + UserInteractionUtil.ANSI_RESET;
+            output[2] += "    " + UserInteractionUtil.getPrintableColor(color)
+                    + UserInteractionUtil.getPrintableCardLowerBorder(3)
+                    + UserInteractionUtil.ANSI_RESET;
         }
         System.out.println(String.join("\n", output));
     }

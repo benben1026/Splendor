@@ -34,14 +34,26 @@ public class Card extends Item{
 
     public List<String> toListOfString() {
         List<String> output = new ArrayList<>();
-        output.add(UserInteractionUtil.getPrintableColor(_color) + "_________"  + UserInteractionUtil.ANSI_RESET);
-        output.add(UserInteractionUtil.getPrintableColor(_color) + String.format("|%7s|", _color.toString()) + UserInteractionUtil.ANSI_RESET);
-        output.add(UserInteractionUtil.getPrintableColor(_color) + String.format("|score=%d|", _score) + UserInteractionUtil.ANSI_RESET);
+        output.add(UserInteractionUtil.getPrintableColor(_color)
+                + UserInteractionUtil.getPrintableCardUpperBorder(9)
+                + UserInteractionUtil.ANSI_RESET);
+        output.add(UserInteractionUtil.getPrintableColor(_color)
+                + UserInteractionUtil.VERTICAL
+                + String.format("%7s", _color.toString())
+                + UserInteractionUtil.VERTICAL
+                + UserInteractionUtil.ANSI_RESET);
+        output.add(UserInteractionUtil.getPrintableColor(_color)
+                + UserInteractionUtil.VERTICAL
+                + String.format("score=%d", _score)
+                + UserInteractionUtil.VERTICAL
+                + UserInteractionUtil.ANSI_RESET);
         _price.forEach((color, count) -> output.add(getBorder(_color) + getPrintableToken(color, count) + getBorder(_color)));
         for (int i = 0; i < 4 - _price.size(); i++) {
             output.add(getBorder(_color) + "       " + getBorder(_color));
         }
-        output.add(UserInteractionUtil.getPrintableColor(_color) + "---------" + UserInteractionUtil.ANSI_RESET + UserInteractionUtil.ANSI_RESET);
+        output.add(UserInteractionUtil.getPrintableColor(_color)
+                + UserInteractionUtil.getPrintableCardLowerBorder(9)
+                + UserInteractionUtil.ANSI_RESET + UserInteractionUtil.ANSI_RESET);
         return output;
     }
 
@@ -51,7 +63,9 @@ public class Card extends Item{
     }
 
     private String getBorder(ColorUtil.Color color) {
-        return UserInteractionUtil.getPrintableColor(color) + "|" + UserInteractionUtil.ANSI_RESET;
+        return UserInteractionUtil.getPrintableColor(color)
+                + UserInteractionUtil.VERTICAL
+                + UserInteractionUtil.ANSI_RESET;
     }
 
     public ColorUtil.Color getColor() {

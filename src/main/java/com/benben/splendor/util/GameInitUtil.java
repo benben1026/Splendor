@@ -19,13 +19,13 @@ public final class GameInitUtil {
             List<Card> cardsLevel2,
             List<Card> cardsLevel3,
             List<Noble> nobles) {
-        String path = "./src/main/resources/init.json";
+        String path = "./src/main/resources/cards.json";
         JSONParser jsonParser = new JSONParser();
 
         try (FileReader reader = new FileReader(path)) {
             JSONObject object = (JSONObject) jsonParser.parse(reader);
-            initGameForNoble((JSONArray) object.get("0"), nobles);
-            initGameForPlayers((JSONArray) object.get(numOfPlayers + ""), cardsLevel1, cardsLevel2, cardsLevel3);
+            initGameForNoble((JSONArray) object.get("noble"), nobles);
+            initGameForPlayers((JSONArray) object.get("deck"), cardsLevel1, cardsLevel2, cardsLevel3);
         } catch (IOException | ParseException exception) {
             exception.printStackTrace();
         }

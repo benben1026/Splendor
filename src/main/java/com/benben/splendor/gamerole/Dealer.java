@@ -9,6 +9,7 @@ import com.benben.splendor.util.UserInteractionUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class Dealer extends Role{
@@ -23,9 +24,11 @@ public class Dealer extends Role{
     private List<Card> _visibleCardsLevel2 = new ArrayList<>();
     private List<Card> _visibleCardsLevel3 = new ArrayList<>();
 
+    private Random _random;
 
     public Dealer(int numOfPlayers) {
         super("Bank");
+        _random = new Random(System.currentTimeMillis());
         GameInitUtil.initGame(numOfPlayers,_invisibleCardsLevel1, _invisibleCardsLevel2, _invisibleCardsLevel3, _nobles);
         initVisibleCards();
         int tokenCount;
@@ -43,9 +46,17 @@ public class Dealer extends Role{
     }
 
     private void initVisibleCards() {
-        _visibleCardsLevel1 = _invisibleCardsLevel1;
-        _visibleCardsLevel2 = _invisibleCardsLevel2;
-        _visibleCardsLevel3 = _invisibleCardsLevel3;
+        getRandomCardsFromInvisibleCards(_invisibleCardsLevel1, _visibleCardsLevel1, 4);
+        getRandomCardsFromInvisibleCards(_invisibleCardsLevel2, _visibleCardsLevel2, 4);
+        getRandomCardsFromInvisibleCards(_invisibleCardsLevel3, _visibleCardsLevel3, 4);
+    }
+
+    private void getRandomCardsFromInvisibleCards(List<Card> invisible, List<Card> visible, int num) {
+        while(num > 0) {
+            int index = (int) _random.nextInt(invisible.size());
+            visible.add(invisible.remove(index));
+            num --;
+        }
     }
 
     private Card getCardFromIndex(int index) {
@@ -69,19 +80,32 @@ public class Dealer extends Role{
     private Card removeCardFromIndex(int index) {
         int row = index / 4;
         int col = index % 4;
+        Card card = null;
         try {
             if (row == 0) {
-                return _visibleCardsLevel3.remove(col);
+                card = _visibleCardsLevel3.remove(col);
+                getRandomCardFromInvisibleList(_invisibleCardsLevel3, _visibleCardsLevel3, col);
             } else if (row == 1) {
-                return _visibleCardsLevel2.remove(col);
+                card = _visibleCardsLevel2.remove(col);
+                getRandomCardFromInvisibleList(_invisibleCardsLevel2, _visibleCardsLevel2, col);
             } else if (row == 2) {
-                return _visibleCardsLevel1.remove(col);
+                card = _visibleCardsLevel1.remove(col);
+                getRandomCardFromInvisibleList(_invisibleCardsLevel1, _visibleCardsLevel1, col);
             } else {
                 return null;
             }
+            return card;
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    private void getRandomCardFromInvisibleList(List<Card> invisibleCardList, List<Card> visibleCardList, int index) {
+        if (invisibleCardList.isEmpty()) {
+            return;
+        }
+        int removeIndex = _random.nextInt(invisibleCardList.size());
+        visibleCardList.add(index, invisibleCardList.remove(removeIndex));
     }
 
     public boolean requestToBuyHoldCard(Player player, int index) {

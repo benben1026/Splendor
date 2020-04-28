@@ -1,0 +1,850 @@
+{
+  "noble": [
+    {
+      "price": {
+        "GREEN": "3",
+        "BLUE": "3",
+        "WHITE": "3"
+      }
+    },
+    {
+      "price": {
+        "BLACK": "3",
+        "RED": "3",
+        "WHITE": "3"
+      }
+    },
+    {
+      "price": {
+        "BLACK": "3",
+        "BLUE": "3",
+        "WHITE": "3"
+      }
+    },
+    {
+      "price": {
+        "BLACK": "3",
+        "RED": "3",
+        "GREEN": "3"
+      }
+    },
+    {
+      "price": {
+        "GREEN": "3",
+        "BLUE": "3",
+        "RED": "3"
+      }
+    },
+    {
+      "price": {
+        "BLUE": "4",
+        "GREEN": "4"
+      }
+    },
+    {
+      "price": {
+        "BLACK": "4",
+        "WHITE": "4"
+      }
+    },
+    {
+      "price": {
+        "BLACK": "4",
+        "RED": "4"
+      }
+    },
+    {
+      "price": {
+        "BLUE": "4",
+        "WHITE": "4"
+      }
+    },
+    {
+      "price": {
+        "RED": "4",
+        "GREEN": "4"
+      }
+    }
+  ],
+  "deck": [
+    {
+      "level1": [
+        {
+          "score": "1",
+          "color": "WHITE",
+          "price": {
+            "GREEN": "4"
+          }
+        },
+        {
+          "score": "0",
+          "color": "WHITE",
+          "price": {
+            "BLUE": "3"
+          }
+        },
+        {
+          "score": "0",
+          "color": "WHITE",
+          "price": {
+            "RED": "2",
+            "BLACK": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "WHITE",
+          "price": {
+            "BLUE": "2",
+            "BLACK": "2"
+          }
+        },
+        {
+          "score": "0",
+          "color": "WHITE",
+          "price": {
+            "BLUE": "1",
+            "GREEN": "1",
+            "RED": "1",
+            "BLACK": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "WHITE",
+          "price": {
+            "BLUE": "1",
+            "GREEN": "2",
+            "RED": "1",
+            "BLACK": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "WHITE",
+          "price": {
+            "BLUE": "2",
+            "GREEN": "2",
+            "BLACK": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "WHITE",
+          "price": {
+            "WHITE": "3",
+            "BLUE": "1",
+            "BLACK": "1"
+          }
+        },
+
+        {
+          "score": "1",
+          "color": "BLUE",
+          "price": {
+            "RED": "4"
+          }
+        },
+        {
+          "score": "0",
+          "color": "BLUE",
+          "price": {
+            "BLACK": "3"
+          }
+        },
+        {
+          "score": "0",
+          "color": "BLUE",
+          "price": {
+            "BLACK": "2",
+            "WHITE": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "BLUE",
+          "price": {
+            "GREEN": "2",
+            "BLACK": "2"
+          }
+        },
+        {
+          "score": "0",
+          "color": "BLUE",
+          "price": {
+            "WHITE": "1",
+            "GREEN": "1",
+            "RED": "1",
+            "BLACK": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "BLUE",
+          "price": {
+            "WHITE": "1",
+            "RED": "2",
+            "GREEN": "1",
+            "BLACK": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "BLUE",
+          "price": {
+            "RED": "2",
+            "GREEN": "2",
+            "WHITE": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "BLUE",
+          "price": {
+            "GREEN": "3",
+            "BLUE": "1",
+            "RED": "1"
+          }
+        },
+
+        {
+          "score": "1",
+          "color": "GREEN",
+          "price": {
+            "BLACK": "4"
+          }
+        },
+        {
+          "score": "0",
+          "color": "GREEN",
+          "price": {
+            "RED": "3"
+          }
+        },
+        {
+          "score": "0",
+          "color": "GREEN",
+          "price": {
+            "WHITE": "2",
+            "BLUE": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "GREEN",
+          "price": {
+            "BLUE": "2",
+            "RED": "2"
+          }
+        },
+        {
+          "score": "0",
+          "color": "GREEN",
+          "price": {
+            "WHITE": "1",
+            "BLUE": "1",
+            "RED": "1",
+            "BLACK": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "GREEN",
+          "price": {
+            "WHITE": "1",
+            "BLACK": "2",
+            "BLUE": "1",
+            "RED": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "GREEN",
+          "price": {
+            "RED": "2",
+            "BLACK": "2",
+            "BLUE": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "GREEN",
+          "price": {
+            "BLUE": "3",
+            "WHITE": "1",
+            "GREEN": "1"
+          }
+        },
+
+        {
+          "score": "1",
+          "color": "RED",
+          "price": {
+            "WHITE": "4"
+          }
+        },
+        {
+          "score": "0",
+          "color": "RED",
+          "price": {
+            "WHITE": "3"
+          }
+        },
+        {
+          "score": "0",
+          "color": "RED",
+          "price": {
+            "BLUE": "2",
+            "GREEN": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "RED",
+          "price": {
+            "WHITE": "2",
+            "RED": "2"
+          }
+        },
+        {
+          "score": "0",
+          "color": "RED",
+          "price": {
+            "WHITE": "1",
+            "BLUE": "1",
+            "BLACK": "1",
+            "GREEN": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "RED",
+          "price": {
+            "BLUE": "1",
+            "WHITE": "2",
+            "GREEN": "1",
+            "BLACK": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "RED",
+          "price": {
+            "WHITE": "2",
+            "BLACK": "2",
+            "GREEN": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "RED",
+          "price": {
+            "BLACK": "3",
+            "WHITE": "1",
+            "RED": "1"
+          }
+        },
+
+        {
+          "score": "1",
+          "color": "BLACK",
+          "price": {
+            "BLUE": "4"
+          }
+        },
+        {
+          "score": "0",
+          "color": "BLACK",
+          "price": {
+            "GREEN": "3"
+          }
+        },
+        {
+          "score": "0",
+          "color": "BLACK",
+          "price": {
+            "GREEN": "2",
+            "RED": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "BLACK",
+          "price": {
+            "GREEN": "2",
+            "WHITE": "2"
+          }
+        },
+        {
+          "score": "0",
+          "color": "BLACK",
+          "price": {
+            "WHITE": "1",
+            "GREEN": "1",
+            "BLUE": "1",
+            "RED": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "BLACK",
+          "price": {
+            "WHITE": "1",
+            "BLUE": "2",
+            "GREEN": "1",
+            "RED": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "BLACK",
+          "price": {
+            "WHITE": "2",
+            "BLUE": "2",
+            "RED": "1"
+          }
+        },
+        {
+          "score": "0",
+          "color": "BLACK",
+          "price": {
+            "RED": "3",
+            "GREEN": "1",
+            "BLACK": "1"
+          }
+        }
+      ]
+    },
+    {
+      "level2": [
+        {
+          "score": "3",
+          "color": "WHITE",
+          "price": {
+            "WHITE": "6"
+          }
+        },
+        {
+          "score": "2",
+          "color": "WHITE",
+          "price": {
+            "RED": "5"
+          }
+        },
+        {
+          "score": "2",
+          "color": "WHITE",
+          "price": {
+            "RED": "5",
+            "BLACK": "3"
+          }
+        },
+        {
+          "score": "2",
+          "color": "WHITE",
+          "price": {
+            "GREEN": "1",
+            "BLACK": "2",
+            "RED": "4"
+          }
+        },
+        {
+          "score": "1",
+          "color": "WHITE",
+          "price": {
+            "GREEN": "3",
+            "RED": "2",
+            "BLACK": "2"
+          }
+        },
+        {
+          "score": "1",
+          "color": "WHITE",
+          "price": {
+            "WHITE": "2",
+            "BLUE": "3",
+            "RED": "3"
+          }
+        },
+
+        {
+          "score": "3",
+          "color": "BLUE",
+          "price": {
+            "BLUE": "6"
+          }
+        },
+        {
+          "score": "2",
+          "color": "BLUE",
+          "price": {
+            "BLUE": "5"
+          }
+        },
+        {
+          "score": "2",
+          "color": "BLUE",
+          "price": {
+            "WHITE": "5",
+            "BLUE": "3"
+          }
+        },
+        {
+          "score": "2",
+          "color": "BLUE",
+          "price": {
+            "RED": "1",
+            "WHITE": "2",
+            "BLACK": "4"
+          }
+        },
+        {
+          "score": "1",
+          "color": "BLUE",
+          "price": {
+            "RED": "3",
+            "GREEN": "2",
+            "BLUE": "2"
+          }
+        },
+        {
+          "score": "1",
+          "color": "BLUE",
+          "price": {
+            "BLUE": "2",
+            "GREEN": "3",
+            "BLACK": "3"
+          }
+        },
+
+        {
+          "score": "3",
+          "color": "GREEN",
+          "price": {
+            "GREEN": "6"
+          }
+        },
+        {
+          "score": "2",
+          "color": "GREEN",
+          "price": {
+            "GREEN": "5"
+          }
+        },
+        {
+          "score": "2",
+          "color": "GREEN",
+          "price": {
+            "BLUE": "5",
+            "GREEN": "3"
+          }
+        },
+        {
+          "score": "2",
+          "color": "GREEN",
+          "price": {
+            "BLACK": "1",
+            "BLUE": "2",
+            "WHITE": "4"
+          }
+        },
+        {
+          "score": "1",
+          "color": "GREEN",
+          "price": {
+            "BLUE": "3",
+            "WHITE": "2",
+            "BLACK": "2"
+          }
+        },
+        {
+          "score": "1",
+          "color": "GREEN",
+          "price": {
+            "GREEN": "2",
+            "WHITE": "3",
+            "RED": "3"
+          }
+        },
+
+        {
+          "score": "3",
+          "color": "RED",
+          "price": {
+            "RED": "6"
+          }
+        },
+        {
+          "score": "2",
+          "color": "RED",
+          "price": {
+            "BLACK": "5"
+          }
+        },
+        {
+          "score": "2",
+          "color": "RED",
+          "price": {
+            "BLACK": "5",
+            "WHITE": "3"
+          }
+        },
+        {
+          "score": "2",
+          "color": "RED",
+          "price": {
+            "WHITE": "1",
+            "GREEN": "2",
+            "BLUE": "4"
+          }
+        },
+        {
+          "score": "1",
+          "color": "RED",
+          "price": {
+            "BLACK": "3",
+            "WHITE": "2",
+            "RED": "2"
+          }
+        },
+        {
+          "score": "1",
+          "color": "RED",
+          "price": {
+            "RED": "2",
+            "BLUE": "3",
+            "BLACK": "3"
+          }
+        },
+
+        {
+          "score": "3",
+          "color": "BLACK",
+          "price": {
+            "BLACK": "6"
+          }
+        },
+        {
+          "score": "2",
+          "color": "BLACK",
+          "price": {
+            "WHITE": "5"
+          }
+        },
+        {
+          "score": "2",
+          "color": "BLACK",
+          "price": {
+            "GREEN": "5",
+            "RED": "3"
+          }
+        },
+        {
+          "score": "2",
+          "color": "BLACK",
+          "price": {
+            "BLUE": "1",
+            "RED": "2",
+            "GREEN": "4"
+          }
+        },
+        {
+          "score": "1",
+          "color": "BLACK",
+          "price": {
+            "WHITE": "3",
+            "BLUE": "2",
+            "GREEN": "2"
+          }
+        },
+        {
+          "score": "1",
+          "color": "BLACK",
+          "price": {
+            "BLACK": "2",
+            "WHITE": "3",
+            "GREEN": "3"
+          }
+        }
+      ]
+    },
+    {
+      "level3": [
+        {
+          "score": "5",
+          "color": "WHITE",
+          "price": {
+            "BLACK": "7",
+            "WHITE": "3"
+          }
+        },
+        {
+          "score": "4",
+          "color": "WHITE",
+          "price": {
+            "BLACK": "7"
+          }
+        },
+        {
+          "score": "4",
+          "color": "WHITE",
+          "price": {
+            "BLACK": "6",
+            "WHITE": "3",
+            "RED": "3"
+          }
+        },
+        {
+          "score": "3",
+          "color": "WHITE",
+          "price": {
+            "RED": "5",
+            "BLUE": "3",
+            "GREEN": "3",
+            "BLACK": "3"
+          }
+        },
+
+        {
+          "score": "5",
+          "color": "BLUE",
+          "price": {
+            "WHITE": "7",
+            "BLUE": "3"
+          }
+        },
+        {
+          "score": "4",
+          "color": "BLUE",
+          "price": {
+            "WHITE": "7"
+          }
+        },
+        {
+          "score": "4",
+          "color": "BLUE",
+          "price": {
+            "WHITE": "6",
+            "BLUE": "3",
+            "BLACK": "3"
+          }
+        },
+        {
+          "score": "3",
+          "color": "BLUE",
+          "price": {
+            "BLACK": "5",
+            "WHITE": "3",
+            "GREEN": "3",
+            "RED": "3"
+          }
+        },
+
+        {
+          "score": "5",
+          "color": "GREEN",
+          "price": {
+            "BLUE": "7",
+            "GREEN": "3"
+          }
+        },
+        {
+          "score": "4",
+          "color": "GREEN",
+          "price": {
+            "BLUE": "7"
+          }
+        },
+        {
+          "score": "4",
+          "color": "GREEN",
+          "price": {
+            "BLUE": "6",
+            "WHITE": "3",
+            "GREEN": "3"
+          }
+        },
+        {
+          "score": "3",
+          "color": "GREEN",
+          "price": {
+            "WHITE": "5",
+            "BLUE": "3",
+            "RED": "3",
+            "BLACK": "3"
+          }
+        },
+
+        {
+          "score": "5",
+          "color": "RED",
+          "price": {
+            "GREEN": "7",
+            "RED": "3"
+          }
+        },
+        {
+          "score": "4",
+          "color": "RED",
+          "price": {
+            "GREEN": "7"
+          }
+        },
+        {
+          "score": "4",
+          "color": "RED",
+          "price": {
+            "GREEN": "6",
+            "BLUE": "3",
+            "RED": "3"
+          }
+        },
+        {
+          "score": "3",
+          "color": "RED",
+          "price": {
+            "BLUE": "5",
+            "WHITE": "3",
+            "GREEN": "3",
+            "BLACK": "3"
+          }
+        },
+
+        {
+          "score": "5",
+          "color": "BLACK",
+          "price": {
+            "RED": "7",
+            "BLACK": "3"
+          }
+        },
+        {
+          "score": "4",
+          "color": "BLACK",
+          "price": {
+            "RED": "7"
+          }
+        },
+        {
+          "score": "4",
+          "color": "BLACK",
+          "price": {
+            "RED": "6",
+            "GREEN": "3",
+            "BLACK": "3"
+          }
+        },
+        {
+          "score": "3",
+          "color": "BLACK",
+          "price": {
+            "GREEN": "5",
+            "WHITE": "3",
+            "BLUE": "3",
+            "RED": "3"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class Dealer extends Role{
 
@@ -113,8 +112,7 @@ public class Dealer extends Role{
             return false;
         }
         Card cardToBuy = player.getHoldCards().get(index);
-        Map<ColorUtil.Color, Integer> cardsByCount = player.getCards().entrySet().stream().collect(
-                Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().size()));
+        Map<ColorUtil.Color, Integer> cardsByCount = player.getCardsByCount();
         if (!cardToBuy.affordable(player.getTokens(), cardsByCount)) {
             return false;
         }
@@ -127,9 +125,9 @@ public class Dealer extends Role{
         if (player.getHoldCards().size() >= 3) {
             return false;
         }
-        player.addHoldCard(removeCardFromIndex(index));
+        player.receiveHoldCard(removeCardFromIndex(index));
         if (_tokens.get(ColorUtil.Color.YELLOW) > 0) {
-            player.addToken(ColorUtil.Color.YELLOW, 1);
+            player.receiveTokens(ColorUtil.Color.YELLOW, 1);
             _tokens.put(ColorUtil.Color.YELLOW, _tokens.get(ColorUtil.Color.YELLOW) - 1);
             // Todo: check the total number of tokens does not exceed 10
         }
@@ -141,8 +139,7 @@ public class Dealer extends Role{
         if (cardToBuy == null) {
             return false;
         }
-        Map<ColorUtil.Color, Integer> cardsByCount = player.getCards().entrySet().stream().collect(
-                Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().size()));
+        Map<ColorUtil.Color, Integer> cardsByCount = player.getCardsByCount();
         if (!cardToBuy.affordable(player.getTokens(), cardsByCount)) {
             return false;
         }
@@ -151,26 +148,25 @@ public class Dealer extends Role{
         return true;
     }
 
-    public void buyCard(Player player, Card card) {
-        Map<ColorUtil.Color, Integer> cardsByCount = player.getCards().entrySet().stream().collect(
-                Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().size()));
-        for (Map.Entry<ColorUtil.Color, Integer> singleColorCost : card.getPrice().entrySet()) {
+    public void buyCard(Player player, Card cardToBuy) {
+        Map<ColorUtil.Color, Integer> cardsByCount = player.getCardsByCount();
+        for (Map.Entry<ColorUtil.Color, Integer> singleColorCost : cardToBuy.getPrice().entrySet()) {
             ColorUtil.Color color = singleColorCost.getKey();
             int needTokenCount = singleColorCost.getValue() - cardsByCount.getOrDefault(color, 0);
             if (needTokenCount <= player.getTokens().getOrDefault(color, 0)) {
                 // No need to use Star Token
-                player.getTokens().put(color, player.getTokens().getOrDefault(color, 0) - needTokenCount);
-                this.addToken(color, needTokenCount);
+                player.payWithTokens(color, needTokenCount);
+                this.receiveTokens(color, needTokenCount);
             } else {
                 // Need to use Star Token
                 int diff = needTokenCount - player.getTokens().getOrDefault(color, 0);
-                player.getTokens().put(ColorUtil.Color.YELLOW, player.getTokens().get(ColorUtil.Color.YELLOW) - diff);
-                player.getTokens().put(color, 0);
-                this.addToken(ColorUtil.Color.YELLOW, diff);
-                this.addToken(color, needTokenCount - diff);
+                player.payWithTokens(color, needTokenCount - diff);
+                player.payWithTokens(ColorUtil.Color.YELLOW, diff);
+                this.receiveTokens(ColorUtil.Color.YELLOW, diff);
+                this.receiveTokens(color, needTokenCount - diff);
             }
         }
-        player.takeCard(card);
+        player.receiveCard(cardToBuy);
     }
 
     public boolean requestToTakeTokens(int[] tokens) {
@@ -202,10 +198,6 @@ public class Dealer extends Role{
             }
         }
         return true;
-    }
-
-    public void addToken(ColorUtil.Color color, int count) {
-        _tokens.put(color, _tokens.get(color) + count);
     }
 
     public List<Card> getVisibleCardsLevel1() {

@@ -33,6 +33,14 @@ public abstract class Role {
         return _tokens;
     }
 
+    public final void receiveTokens(ColorUtil.Color color, int count) {
+        _tokens.put(color, _tokens.get(color) + count);
+    }
+
+    public int getTotalTokensCount() {
+        return _tokens.values().stream().mapToInt(i -> i).sum();
+    }
+
     void printToken() {
         List<String> output = new ArrayList<>();
         output.add(UserInteractionUtil.ANSI_YELLOW + "#:" + _tokens.get(ColorUtil.Color.YELLOW) + UserInteractionUtil.ANSI_RESET);

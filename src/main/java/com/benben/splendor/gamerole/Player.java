@@ -1,6 +1,7 @@
 package com.benben.splendor.gamerole;
 
 import com.benben.splendor.gameItem.Card;
+import com.benben.splendor.gameItem.Item;
 import com.benben.splendor.gameItem.Noble;
 import com.benben.splendor.util.ColorUtil;
 import com.benben.splendor.util.UserInteractionUtil;
@@ -9,12 +10,13 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-public class Player extends Role{
+public abstract class Player extends Role{
 
-    LinkedHashMap<ColorUtil.Color, List<Card>> _cards;
-    List<Card> _holdCards;
-    List<Noble> _nobles;
+    private LinkedHashMap<ColorUtil.Color, List<Card>> _cards;
+    private List<Card> _holdCards;
+    private List<Noble> _nobles;
 
     public Player(String name) {
         super(name);
@@ -29,50 +31,57 @@ public class Player extends Role{
         }
     }
 
-    public List<Card> getHoldCards() {
+    /**
+     * The System will notify the player when it's his turn by calling this method.
+     * @param dealer Dealer
+     * @param players You could access the information of all the players.
+     */
+    // Todo: Pass a copy of other players information to prevent undesired modifications
+    //       the current player.
+    public abstract void notifyTurn(Dealer dealer, List<Player> players);
+
+    public final List<Card> getHoldCards() {
         return _holdCards;
     }
 
-    public LinkedHashMap<ColorUtil.Color, List<Card>> getCards() {
-        return _cards;
+    public final boolean payWithTokens(ColorUtil.Color color, int count) {
+        if (_tokens.get(color) < count) {
+            return false;
+        }
+        _tokens.put(color, _tokens.get(color) - count);
+        return true;
     }
 
-    public void addHoldCard(Card card) {
+    public final void receiveCard(Card card) {
+        _cards.get(card.getColor()).add(card);
+    }
+
+    public final void receiveHoldCard(Card card) {
         _holdCards.add(card);
     }
 
+    public final int getTotalScore() {
+        int totalScore = 0;
+        for (Map.Entry<ColorUtil.Color, List<Card>> entry : _cards.entrySet()) {
+            totalScore += entry.getValue().stream().mapToInt(Item::getScore).sum();
+        }
+        return totalScore + _nobles.stream().mapToInt(Item::getScore).sum();
+    }
+
+    public final Map<ColorUtil.Color, Integer> getCardsByCount() {
+        return _cards.entrySet().stream().collect(
+                Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().size()));
+    }
+
+
     @Override
-    public void printCurrentStatus(boolean myTurn) {
+    public final void printCurrentStatus(boolean myTurn) {
         System.out.println(_name + "  totalScore:" + getTotalScore());
         printToken();
         printCards();
         if (myTurn) {
             printHoldCards();
         }
-    }
-
-    public void addToken(ColorUtil.Color color, int count) {
-        _tokens.put(color, _tokens.get(color) + count);
-    }
-
-    public void addTokens(int[] tokens) {
-        for (int i = 0; i < tokens.length; i++) {
-            if (tokens[i] != 0) {
-                addToken(ColorUtil.getColorFromIndex(i), tokens[i]);
-            }
-        }
-    }
-
-    public boolean validateNumOfTokens() {
-        int totalCount = 0;
-        for (Map.Entry<ColorUtil.Color, Integer> entry : _tokens.entrySet()) {
-            totalCount += entry.getValue();
-        }
-        return totalCount <= 10;
-    }
-
-    public void takeCard(Card card) {
-        _cards.get(card.getColor()).add(card);
     }
 
     private void printCards() {
@@ -103,18 +112,5 @@ public class Player extends Role{
         }
         System.out.println("Hold Cards");
         UserInteractionUtil.printItemsInOneRow(_holdCards);
-    }
-
-    public int getTotalScore() {
-        int totalScore = 0;
-        for (Noble noble : _nobles) {
-            totalScore += noble.getScore();
-        }
-        for (Map.Entry<ColorUtil.Color, List<Card>> entry : _cards.entrySet()) {
-            for (Card card : entry.getValue()) {
-                totalScore += card.getScore();
-            }
-        }
-        return totalScore;
     }
 }

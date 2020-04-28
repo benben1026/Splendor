@@ -13,6 +13,8 @@ import java.util.*;
 
 public final class GameInitUtil {
 
+    public static final Scanner SYSTEM_INPUT = new Scanner(System.in);
+
     public static void initGame(
             int numOfPlayers,
             List<Card> cardsLevel1,

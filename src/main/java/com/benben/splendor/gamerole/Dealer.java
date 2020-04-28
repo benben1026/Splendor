@@ -92,7 +92,7 @@ public class Dealer extends Role{
                 card = _visibleCardsLevel1.remove(col);
                 getRandomCardFromInvisibleList(_invisibleCardsLevel1, _visibleCardsLevel1, col);
             } else {
-                card = null;
+                return null;
             }
             return card;
         } catch (Exception ex) {

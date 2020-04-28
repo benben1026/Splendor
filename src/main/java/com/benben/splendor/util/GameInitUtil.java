@@ -35,18 +35,18 @@ public final class GameInitUtil {
     }
 
     private static void initGameForNoble(JSONArray array, List<Noble> nobles, int numOfPlayers) {
+        List<Noble> buffer = new ArrayList<>();
         for(int i = 0; i < array.size(); i++) {
             JSONObject object = (JSONObject) array.get(i);
             Map<ColorUtil.Color, Integer> priceMap = getPricesToMap((JSONObject) object.get("price"));
 
             Noble noble = new Noble(priceMap);
-            nobles.add(noble);
+            buffer.add(noble);
         }
-        // keep the noble num = numOfPlayers + 1
-        int numToDelete = nobles.size() - numOfPlayers - 1;
-        while(numToDelete > 0) {
-            nobles.remove(random.nextInt(nobles.size()));
-            numToDelete --;
+        // keep the nobles size as numOfPlayers+1
+        while(numOfPlayers >= 0) {
+            nobles.add(buffer.remove(random.nextInt(buffer.size())));
+            numOfPlayers--;
         }
     }
 

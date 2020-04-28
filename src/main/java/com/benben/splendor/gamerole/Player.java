@@ -80,6 +80,15 @@ public abstract class Player extends Role{
                 Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().size()));
     }
 
+    @Override
+    public Player clone() {
+        try {
+            return (Player) super.clone();
+        } catch (CloneNotSupportedException e) {
+            UserInteractionUtil.OUT.println("One player object cannot be deep copied");
+            return null;
+        }
+    }
 
     @Override
     public final void printCurrentStatus(boolean myTurn) {

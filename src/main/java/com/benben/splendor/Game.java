@@ -35,6 +35,12 @@ public class Game {
                 }
                 Player currentPlayer = _players.get(_currentPlayerIndex);
                 System.out.println("It is " + currentPlayer.getName() + "'s turn.");
+                List<Player> otherPlayers = new ArrayList<>();
+                int i = _currentPlayerIndex + 1;
+                while (i != _currentPlayerIndex) {
+                    i = i % _players.size();
+                    otherPlayers.add(_players.get(i).clone());
+                }
                 currentPlayer.notifyTurn(_dealer, _players);
                 _dealer.validatePlayerTokenCounts(currentPlayer);
                 _currentPlayerIndex ++;

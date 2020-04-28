@@ -14,6 +14,7 @@ import java.util.*;
 public final class GameInitUtil {
 
     public static final Scanner SYSTEM_INPUT = new Scanner(System.in);
+    private static Random random = new Random(System.currentTimeMillis());
 
     public static void initGame(
             int numOfPlayers,
@@ -26,14 +27,14 @@ public final class GameInitUtil {
 
         try (FileReader reader = new FileReader(path)) {
             JSONObject object = (JSONObject) jsonParser.parse(reader);
-            initGameForNoble((JSONArray) object.get("noble"), nobles);
+            initGameForNoble((JSONArray) object.get("noble"), nobles, numOfPlayers);
             initGameForPlayers((JSONArray) object.get("deck"), cardsLevel1, cardsLevel2, cardsLevel3);
         } catch (IOException | ParseException exception) {
             exception.printStackTrace();
         }
     }
 
-    private static void initGameForNoble(JSONArray array, List<Noble> nobles) {
+    private static void initGameForNoble(JSONArray array, List<Noble> nobles, int numOfPlayers) {
         for(int i = 0; i < array.size(); i++) {
             JSONObject object = (JSONObject) array.get(i);
             Map<ColorUtil.Color, Integer> priceMap = getPricesToMap((JSONObject) object.get("price"));
@@ -41,7 +42,12 @@ public final class GameInitUtil {
             Noble noble = new Noble(priceMap);
             nobles.add(noble);
         }
-        // need to remove per players num
+        // keep the noble num = numOfPlayers + 1
+        int numToDelete = nobles.size() - numOfPlayers - 1;
+        while(numToDelete > 0) {
+            nobles.remove(random.nextInt(nobles.size()));
+            numToDelete --;
+        }
     }
 
     private static void initGameForPlayers(JSONArray array, List<Card> cardsLevel1, List<Card> cardsLevel2, List<Card> cardsLevel3) {

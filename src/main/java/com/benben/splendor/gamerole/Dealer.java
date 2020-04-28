@@ -20,13 +20,17 @@ public class Dealer extends Role{
     private List<Card> _visibleCardsLevel2 = new ArrayList<>();
     private List<Card> _visibleCardsLevel3 = new ArrayList<>();
 
+    private Card _topCardFromDeck1;
+    private Card _topCardFromDeck2;
+    private Card _topCardFromDeck3;
+
     private Random _random;
 
     public Dealer(int numOfPlayers) {
         super("Bank");
         _random = new Random(System.currentTimeMillis());
         GameInitUtil.initGame(numOfPlayers,_invisibleCardsLevel1, _invisibleCardsLevel2, _invisibleCardsLevel3, _nobles);
-        initVisibleCards();
+        initCards();
         int tokenCount;
         if (numOfPlayers == 2 || numOfPlayers == 3) {
             tokenCount = numOfPlayers + 2;
@@ -41,16 +45,31 @@ public class Dealer extends Role{
         _tokens.put(ColorUtil.Color.YELLOW, 5);
     }
 
-    private void initVisibleCards() {
-        getRandomCardsFromInvisibleCards(_invisibleCardsLevel1, _visibleCardsLevel1, 4);
-        getRandomCardsFromInvisibleCards(_invisibleCardsLevel2, _visibleCardsLevel2, 4);
-        getRandomCardsFromInvisibleCards(_invisibleCardsLevel3, _visibleCardsLevel3, 4);
+    public Card getNextInvisibleCard(int level) {
+        switch (level) {
+            case 1:
+                return _topCardFromDeck1;
+            case 2:
+                return _topCardFromDeck2;
+            case 3:
+                return _topCardFromDeck3;
+            default:
+                return null;
+        }
     }
 
-    private void getRandomCardsFromInvisibleCards(List<Card> invisible, List<Card> visible, int num) {
+    private void initCards() {
+        initVisibleCards(_invisibleCardsLevel1, _visibleCardsLevel1, 4);
+        initVisibleCards(_invisibleCardsLevel2, _visibleCardsLevel2, 4);
+        initVisibleCards(_invisibleCardsLevel3, _visibleCardsLevel3, 4);
+        _topCardFromDeck1 = getNextRandomCard(_invisibleCardsLevel1);
+        _topCardFromDeck2 = getNextRandomCard(_invisibleCardsLevel2);
+        _topCardFromDeck3 = getNextRandomCard(_invisibleCardsLevel3);
+    }
+
+    private void initVisibleCards(List<Card> invisible, List<Card> visible, int num) {
         while(num > 0) {
-            int index = (int) _random.nextInt(invisible.size());
-            visible.add(invisible.remove(index));
+            visible.add(getNextRandomCard(invisible));
             num --;
         }
     }
@@ -80,13 +99,16 @@ public class Dealer extends Role{
         try {
             if (row == 0) {
                 card = _visibleCardsLevel3.remove(col);
-                getRandomCardFromInvisibleList(_invisibleCardsLevel3, _visibleCardsLevel3, col);
+                _visibleCardsLevel3.add(col, _topCardFromDeck3);
+                _topCardFromDeck3 = getNextRandomCard(_invisibleCardsLevel3);
             } else if (row == 1) {
                 card = _visibleCardsLevel2.remove(col);
-                getRandomCardFromInvisibleList(_invisibleCardsLevel2, _visibleCardsLevel2, col);
+                _visibleCardsLevel2.add(col, _topCardFromDeck2);
+                _topCardFromDeck2 = getNextRandomCard(_invisibleCardsLevel2);
             } else if (row == 2) {
                 card = _visibleCardsLevel1.remove(col);
-                getRandomCardFromInvisibleList(_invisibleCardsLevel1, _visibleCardsLevel1, col);
+                _visibleCardsLevel1.add(col, _topCardFromDeck1);
+                _topCardFromDeck1 = getNextRandomCard(_invisibleCardsLevel1);
             } else {
                 return null;
             }
@@ -96,12 +118,11 @@ public class Dealer extends Role{
         }
     }
 
-    private void getRandomCardFromInvisibleList(List<Card> invisibleCardList, List<Card> visibleCardList, int index) {
+    private Card getNextRandomCard(List<Card> invisibleCardList) {
         if (invisibleCardList.isEmpty()) {
-            return;
+            return null;
         }
-        int removeIndex = _random.nextInt(invisibleCardList.size());
-        visibleCardList.add(index, invisibleCardList.remove(removeIndex));
+        return invisibleCardList.remove((int)_random.nextInt(invisibleCardList.size()));
     }
 
     public void validatePlayerTokenCounts(Player player) {

@@ -6,7 +6,9 @@ import com.benben.splendor.util.InvalidInputException;
 import com.benben.splendor.util.UserInteractionUtil;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 public class HumanPlayer extends Player{
@@ -52,6 +54,26 @@ public class HumanPlayer extends Player{
         }
     }
 
+    @Override
+    public Map<ColorUtil.Color, Integer> askToReturnTokens() {
+        printToken();
+        Map<ColorUtil.Color, Integer> returnTokens = new HashMap<>();
+        UserInteractionUtil.askStringInput(GameInitUtil.SYSTEM_INPUT,
+                "Please return some tokens to keep total number under 10 (White, Blue, Green, Red, Black), separate by \",\":\n",
+                (input) -> {
+                    try {
+                        int[] inputTokens = Arrays.stream(input.split(",")).mapToInt(Integer::parseInt).toArray();
+                        for (int i = 0; i < ColorUtil.COLOR_COUNT; i++) {
+                            returnTokens.put(ColorUtil.getColorFromIndex(i), inputTokens[i]);
+                        }
+                        return true;
+                    } catch (Exception e) {
+                        return false;
+                    }
+                });
+        return returnTokens;
+    }
+
     private void takeTokens(Dealer dealer) throws InvalidInputException {
         UserInteractionUtil.askStringInputOnce(GameInitUtil.SYSTEM_INPUT,
                 "Please choose the number of tokens you want to take(White, Blue, Green, Red, Black), separate by \",\":\n",
@@ -67,10 +89,6 @@ public class HumanPlayer extends Player{
                         return false;
                     }
                 });
-        // Todo: Check the total number of tokens to be less than 10.
-//        if (player.validateNumOfTokens()) {
-//            return;
-//        }
     }
 
     private Predicate<Integer> buyCard(Dealer dealer) {

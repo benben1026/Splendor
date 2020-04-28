@@ -6,10 +6,7 @@ import com.benben.splendor.util.ColorUtil;
 import com.benben.splendor.util.GameInitUtil;
 import com.benben.splendor.util.UserInteractionUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class Dealer extends Role{
 
@@ -79,7 +76,7 @@ public class Dealer extends Role{
     private Card removeCardFromIndex(int index) {
         int row = index / 4;
         int col = index % 4;
-        Card card = null;
+        Card card;
         try {
             if (row == 0) {
                 card = _visibleCardsLevel3.remove(col);
@@ -105,6 +102,21 @@ public class Dealer extends Role{
         }
         int removeIndex = _random.nextInt(invisibleCardList.size());
         visibleCardList.add(index, invisibleCardList.remove(removeIndex));
+    }
+
+    public void validatePlayerTokenCounts(Player player) {
+        while (true) {
+            if (player.getTotalTokensCount() <= 10) {
+                return;
+            }
+            Map<ColorUtil.Color, Integer> tokenToReturn =
+                    Optional.ofNullable(player.askToReturnTokens()).orElse(new HashMap<>());
+            for (Map.Entry<ColorUtil.Color, Integer> entry : tokenToReturn.entrySet()) {
+                if (player.payWithTokens(entry.getKey(), entry.getValue())) {
+                    this.receiveTokens(entry.getKey(), entry.getValue());
+                }
+            }
+        }
     }
 
     public boolean requestToBuyHoldCard(Player player, int index) {

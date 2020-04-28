@@ -36,6 +36,7 @@ public class Game {
                 Player currentPlayer = _players.get(_currentPlayerIndex);
                 System.out.println("It is " + currentPlayer.getName() + "'s turn.");
                 currentPlayer.notifyTurn(_dealer, _players);
+                _dealer.validatePlayerTokenCounts(currentPlayer);
                 _currentPlayerIndex ++;
             }
             _currentPlayerIndex = 0;

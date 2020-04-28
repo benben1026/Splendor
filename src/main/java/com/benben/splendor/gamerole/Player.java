@@ -40,6 +40,13 @@ public abstract class Player extends Role{
     //       the current player.
     public abstract void notifyTurn(Dealer dealer, List<Player> players);
 
+    /**
+     * When a player's total tokens exceed 10, the dealer will ask the player to
+     * return some tokens to keep the total count under 10.
+     * @return A map indicates what tokens to return.
+     */
+    public abstract Map<ColorUtil.Color, Integer> askToReturnTokens();
+
     public final List<Card> getHoldCards() {
         return _holdCards;
     }

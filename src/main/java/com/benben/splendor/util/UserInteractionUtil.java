@@ -1,13 +1,14 @@
 package com.benben.splendor.util;
 
+import com.benben.splendor.gameItem.Card;
 import com.benben.splendor.gameItem.Item;
+import com.benben.splendor.gamerole.Player;
 
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public final class UserInteractionUtil {
     public static final String ANSI_RESET = "\u001B[0m";
@@ -37,7 +38,7 @@ public final class UserInteractionUtil {
         }
     }
 
-    public static String getPrintableColor(ColorUtil.Color color) {
+    public static String getPrintableColor(Color color) {
         switch (color) {
             case YELLOW:
                 return ANSI_YELLOW;
@@ -102,19 +103,40 @@ public final class UserInteractionUtil {
     }
 
     public static void printItemsInOneRow(List<? extends Item> items) {
-        String[] output = new String[items.get(0).FULL_HEIGHT];
-        for (int i = 0; i < output.length; i++) {
-            output[i] = "";
+        List<Item> nonNullList = items.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        if (nonNullList.isEmpty()) {
+            return;
         }
+        String[] output = new String[nonNullList.get(0).getFullHeight()];
+        Arrays.fill(output, "");
 
-        for (Item card : items) {
-            List<String> cardString = card.toListOfString();
+        for (Item item : items) {
+            List<String> cardString;
+            if (item == null) {
+                String[] tmp = new String[nonNullList.get(0).getItemWidth()];
+                Arrays.fill(tmp, "-");
+                String row = String.join("", tmp);
+                tmp = new String[nonNullList.get(0).getFullHeight()];
+                Arrays.fill(tmp, row);
+                cardString = Arrays.asList(tmp);
+            } else {
+                cardString = item.toListOfString();
+            }
             for (int i = 0; i < cardString.size(); i++) {
                 output[i] += "\t" + cardString.get(i);
             }
         }
 
         OUT.println(String.join("\n", output));
+    }
+
+    public static void printPlayerCurrentStatus(Player player, boolean printHoldCards, List<Card> holdCards) {
+        System.out.println(player.getName() + "  totalScore:" + player.getTotalScore());
+        player.printToken();
+        player.printCards();
+        if (printHoldCards && !holdCards.isEmpty()) {
+            printItemsInOneRow(holdCards);
+        }
     }
 
     public static String getBorder(String colorCode) {

@@ -1,6 +1,6 @@
 package com.benben.splendor.gameItem;
 
-import com.benben.splendor.util.ColorUtil;
+import com.benben.splendor.util.Color;
 import com.benben.splendor.util.UserInteractionUtil;
 
 import java.util.ArrayList;
@@ -8,26 +8,42 @@ import java.util.List;
 import java.util.Map;
 
 public class Card extends Item{
-    public static final int CARD_FOLD_HEIGHT = 3;
+    public static final int CARD_FOLDED_HEIGHT = 3;
+    private static final int CARD_FULL_HEIGHT = 8;
+    private static final int CARD_WIDTH = 9;
 
-    private final ColorUtil.Color _color;
+    private final Color _color;
 
-    public Card(ColorUtil.Color color, int score, Map<ColorUtil.Color, Integer> price) {
+    public Card(Color color, int score, Map<Color, Integer> price) {
         super(price, score);
         _color = color;
-        FULL_HEIGHT = 8;
     }
 
-    public boolean affordable(Map<ColorUtil.Color, Integer> tokens, Map<ColorUtil.Color, Integer> cards) {
+    public boolean affordable(Map<Color, Integer> tokens, Map<Color, Integer> cards) {
         int balance = 0;
-        for (Map.Entry<ColorUtil.Color, Integer> singleColorCost : _price.entrySet()) {
-            ColorUtil.Color color = singleColorCost.getKey();
+        for (Map.Entry<Color, Integer> singleColorCost : _price.entrySet()) {
+            Color color = singleColorCost.getKey();
             int owned = tokens.getOrDefault(color, 0) + cards.getOrDefault(color, 0);
             if (owned < singleColorCost.getValue()) {
                 balance += singleColorCost.getValue() - owned;
             }
         }
-        return balance <= tokens.getOrDefault(ColorUtil.Color.YELLOW, 0);
+        return balance <= tokens.getOrDefault(Color.YELLOW, 0);
+    }
+
+    @Override
+    public int getFullHeight() {
+        return CARD_FULL_HEIGHT;
+    }
+
+    @Override
+    public int getFoldedHeight() {
+        return CARD_FOLDED_HEIGHT;
+    }
+
+    @Override
+    public int getItemWidth() {
+        return CARD_WIDTH;
     }
 
     @Override
@@ -56,16 +72,20 @@ public class Card extends Item{
         return output;
     }
 
-    private String getPrintableToken(ColorUtil.Color color, int count) {
+    private String getPrintableToken(Color color, int count) {
         String colorString = UserInteractionUtil.getPrintableColor(color);
         return colorString + " @:   " + count + UserInteractionUtil.ANSI_RESET;
     }
 
-    private String getBorder(ColorUtil.Color color) {
+    private String getBorder(Color color) {
         return UserInteractionUtil.getBorder(UserInteractionUtil.getPrintableColor(color));
     }
 
-    public ColorUtil.Color getColor() {
+    public Color getColor() {
         return _color;
+    }
+
+    public Card deepCopy() {
+        return new Card(this._color, this._score, this._price);
     }
 }

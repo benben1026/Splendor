@@ -1,6 +1,6 @@
 package com.benben.splendor.gameItem;
 
-import com.benben.splendor.util.ColorUtil;
+import com.benben.splendor.util.Color;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -8,9 +8,7 @@ import java.util.Map;
 
 public abstract class Item {
     int _score;
-    Map<ColorUtil.Color, Integer> _price;
-
-    public int FULL_HEIGHT;
+    Map<Color, Integer> _price;
 
     /**
      * This abstract method should implement the way of print the item. Each String
@@ -21,10 +19,16 @@ public abstract class Item {
      */
     public abstract List<String> toListOfString();
 
-    public Item(Map<ColorUtil.Color, Integer> price, int score) {
+    public abstract int getFullHeight();
+
+    public abstract int getFoldedHeight();
+
+    public abstract int getItemWidth();
+
+    public Item(Map<Color, Integer> price, int score) {
         _score = score;
         _price = new LinkedHashMap<>();
-        for (Map.Entry<ColorUtil.Color, Integer> tokenToCount : price.entrySet()) {
+        for (Map.Entry<Color, Integer> tokenToCount : price.entrySet()) {
             if (tokenToCount.getValue() != 0) {
                 _price.put(tokenToCount.getKey(), tokenToCount.getValue());
             }
@@ -35,7 +39,7 @@ public abstract class Item {
         return _score;
     }
 
-    public Map<ColorUtil.Color, Integer> getPrice() {
+    public Map<Color, Integer> getPrice() {
         return _price;
     }
 

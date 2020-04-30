@@ -14,6 +14,10 @@ public class Noble extends Item{
         FULL_HEIGHT = 6;
     }
 
+    public boolean affordable(Map<Color, Integer> cards) {
+        return _price.entrySet().stream().allMatch(entry -> cards.get(entry.getKey()) >= entry.getValue());
+    }
+
     @Override
     public List<String> toListOfString() {
         String colorCode = UserInteractionUtil.ANSI_PURPLE;
@@ -43,5 +47,14 @@ public class Noble extends Item{
     private String getPrintablePrice(Color color, int count) {
         String colorString = UserInteractionUtil.getPrintableColor(color);
         return colorString + " &:   " + count + UserInteractionUtil.ANSI_RESET;
+    }
+
+    @Override
+    public Noble clone() {
+        try {
+            return (Noble) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Cannot clone noble");
+        }
     }
 }

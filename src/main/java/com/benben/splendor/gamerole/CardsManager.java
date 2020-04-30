@@ -3,9 +3,10 @@ package com.benben.splendor.gamerole;
 import com.benben.splendor.gameItem.Card;
 import com.benben.splendor.gameItem.Noble;
 import com.benben.splendor.util.CardsPosition;
+import com.benben.splendor.util.Color;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CardsManager {
     private static final int VISIBLE_CARDS_PER_LEVEL = 4;
@@ -31,8 +32,28 @@ public class CardsManager {
         }
     }
 
-    public Noble takeNoble(int index) {
-        return index < _nobles.size() ? _nobles.get(index) : null;
+    public List<Noble> getNobles() {
+        return _nobles;
+    }
+
+    public List<Card> getVisibleCards() {
+        return Arrays.asList(_visibleCards);
+    }
+
+    public Noble getAndRemoveNoble(int index) {
+        return index < _nobles.size() ? _nobles.remove(index) : null;
+    }
+
+    public Map<Integer, Noble> getAffordableNobleList(Map<Color, Integer> playerCards) {
+        Map<Integer, Noble> affordableNobles = new HashMap<>();
+        for (int i = 0; i < _nobles.size(); i++) {
+            if (_nobles.get(i).affordable(playerCards)) {
+                //todo: fix clone
+                //affordableNobles.put(i, _nobles.get(i).clone());
+                affordableNobles.put(i, _nobles.get(i));
+            }
+        }
+        return affordableNobles;
     }
 
     public Card getCard(CardsPosition position) {
@@ -56,6 +77,23 @@ public class CardsManager {
             cardToReturn = flipCard(-1 * position.getCardPositionIndex());
         }
         return cardToReturn;
+    }
+
+    public Map<CardsPosition, Card> getAllVisibleCardsCopy() {
+        Map<CardsPosition, Card> cards = new HashMap<>();
+        for (int i = 0; i < _visibleCards.length; i++) {
+//            cards.put(CardsPosition.getPositionFromIndex(i),
+//                    _visibleCards[i] == null ? null : _visibleCards[i].clone());
+            //todo: fix clone
+            cards.put(CardsPosition.getPositionFromIndex(i), _visibleCards[i]);
+        }
+        return cards;
+    }
+
+    public List<Noble> getAllNobleCopy() {
+        // Todo: fix clone
+        //return _nobles.stream().map(Noble::clone).collect(Collectors.toList());
+        return new ArrayList<>(_nobles);
     }
 
     private Card flipCard(int level) {

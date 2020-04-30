@@ -10,10 +10,9 @@ import com.benben.splendor.util.UserInteractionUtil;
 import java.util.*;
 
 public class Dealer extends Role{
-    private CardsManager _cardsManager;
-    private List<List<Card>> _playerHoldingCards = new ArrayList<>();
-
-    private Random _random;
+    private final CardsManager _cardsManager;
+    private final List<List<Card>> _playerHoldingCards = new ArrayList<>();
+    private final Random _random;
 
     public Dealer(int numOfPlayers) {
         super("Bank");
@@ -50,55 +49,19 @@ public class Dealer extends Role{
         }
     }
 
-    private Card getCardFromIndex(int index) {
-        int row = index / 4;
-        int col = index % 4;
-        try {
-            if (row == 0) {
-                return _visibleCardsLevel3.get(col);
-            } else if (row == 1) {
-                return _visibleCardsLevel2.get(col);
-            } else if (row == 2) {
-                return _visibleCardsLevel1.get(col);
-            } else {
-                return null;
-            }
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    private Card removeCardFromIndex(int index) {
-        int row = index / 4;
-        int col = index % 4;
-        Card card;
-        try {
-            if (row == 0) {
-                card = _visibleCardsLevel3.remove(col);
-                _visibleCardsLevel3.add(col, _topCardFromDeck3);
-                _topCardFromDeck3 = getNextRandomCard(_invisibleCardsLevel3);
-            } else if (row == 1) {
-                card = _visibleCardsLevel2.remove(col);
-                _visibleCardsLevel2.add(col, _topCardFromDeck2);
-                _topCardFromDeck2 = getNextRandomCard(_invisibleCardsLevel2);
-            } else if (row == 2) {
-                card = _visibleCardsLevel1.remove(col);
-                _visibleCardsLevel1.add(col, _topCardFromDeck1);
-                _topCardFromDeck1 = getNextRandomCard(_invisibleCardsLevel1);
-            } else {
-                return null;
-            }
-            return card;
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
     private Card getNextRandomCard(List<Card> invisibleCardList) {
         if (invisibleCardList.isEmpty()) {
             return null;
         }
         return invisibleCardList.remove((int)_random.nextInt(invisibleCardList.size()));
+    }
+
+    public Map<CardsPosition, Card> getAllVisibleCardsCopy() {
+        return _cardsManager.getAllVisibleCardsCopy();
+    }
+
+    public List<Noble> getAllNobleCopy() {
+        return _cardsManager.getAllNobleCopy();
     }
 
     public void validatePlayerTokenCounts(Player player) {
@@ -116,25 +79,20 @@ public class Dealer extends Role{
         }
     }
 
-    public void buyCard(Player player, Card cardToBuy) {
+    public void validateEligibleForNoble(Player player) {
         Map<Color, Integer> cardsByCount = player.getCardsByCount();
-        for (Map.Entry<Color, Integer> singleColorCost : cardToBuy.getPrice().entrySet()) {
-            Color color = singleColorCost.getKey();
-            int needTokenCount = singleColorCost.getValue() - cardsByCount.getOrDefault(color, 0);
-            if (needTokenCount <= player.getTokens().getOrDefault(color, 0)) {
-                // No need to use Star Token
-                player.payWithTokens(color, needTokenCount);
-                this.receiveTokens(color, needTokenCount);
-            } else {
-                // Need to use Star Token
-                int diff = needTokenCount - player.getTokens().getOrDefault(color, 0);
-                player.payWithTokens(color, needTokenCount - diff);
-                player.payWithTokens(Color.YELLOW, diff);
-                this.receiveTokens(Color.YELLOW, diff);
-                this.receiveTokens(color, needTokenCount - diff);
+        Map<Integer, Noble> affordableNobles = _cardsManager.getAffordableNobleList(cardsByCount);
+        if (affordableNobles.size() == 0) {
+            return;
+        } else if (affordableNobles.size() == 1) {
+            player.receiveNoble((Noble)affordableNobles.values().toArray()[0]);
+        } else {
+            int index = player.pickNoble(affordableNobles);
+            if (!affordableNobles.containsKey(index)) {
+                index = (Integer)affordableNobles.keySet().toArray()[0];
             }
+            player.receiveNoble(_cardsManager.getAndRemoveNoble(index));
         }
-        player.receiveCard(cardToBuy);
     }
 
     public boolean playerRequestToTakeTokens(Player player, Map<Color, Integer> tokens) {
@@ -201,10 +159,8 @@ public class Dealer extends Role{
     @Override
     public void printCurrentStatus(boolean myTurn) {
         System.out.println(_name + ":");
-        UserInteractionUtil.printItemsInOneRow(_nobles);
+        UserInteractionUtil.printItemsInOneRow(_cardsManager.getNobles());
         printToken();
-        UserInteractionUtil.printItemsInOneRow(_visibleCardsLevel3);
-        UserInteractionUtil.printItemsInOneRow(_visibleCardsLevel2);
-        UserInteractionUtil.printItemsInOneRow(_visibleCardsLevel1);
+        UserInteractionUtil.printItemsInOneRow(_cardsManager.getVisibleCards());
     }
 }

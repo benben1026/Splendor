@@ -38,24 +38,13 @@ public class Game {
                 }
                 Player currentPlayer = _players.get(_currentPlayerIndex);
                 System.out.println("It is " + currentPlayer.getName() + "'s turn.");
-                List<Player> otherPlayers = new ArrayList<>();
-                int i = _currentPlayerIndex + 1;
-                while (i != _currentPlayerIndex) {
-                    i = i % _players.size();
-                    otherPlayers.add(_players.get(i).clone());
+
+                while(!notifyPlayer()) {
+                    continue;
                 }
-                currentPlayer.askForAction(null, null, null, null);
 
-                ActionAndResponse<> as = currentPlayer.askForAction(null, null, null, null);
-                switch (as.getAction()) {
-                    case TAKE_TOKENS:
-                        TakeTokenActionAndResponse tas = (TakeTokenActionAndResponse) as;
-                }
-                Map<Color, Integer> m = (Map) as.getResponse();
-
-
-                currentPlayer.notifyTurn(_dealer, _players);
                 _dealer.validatePlayerTokenCounts(currentPlayer);
+                _dealer.validateEligibleForNoble(currentPlayer);
                 _currentPlayerIndex ++;
             }
             _currentPlayerIndex = 0;
@@ -79,14 +68,18 @@ public class Game {
     private boolean notifyPlayer() {
         List<Player> opponents = new ArrayList<>();
         int i = _currentPlayerIndex + 1;
-        while (i != _currentPlayerIndex) {
+        while (i % _players.size() != _currentPlayerIndex) {
             i = i % _players.size();
-            opponents.add(_players.get(i).clone());
+            // todo: fix clone
+            //opponents.add(_players.get(i).clone());
+            opponents.add(_players.get(i));
+            i++;
         }
         // Todo: pass in cards and nobles
         Player currentPlayer = _players.get(_currentPlayerIndex);
         ActionAndResponse as = currentPlayer.askForAction(opponents,
-                (Map<Color, Integer>)_dealer.getTokens().clone(), null, null);
+                (Map<Color, Integer>)_dealer.getTokens().clone(), _dealer.getAllVisibleCardsCopy(),
+                _dealer.getAllNobleCopy());
         switch (as.getAction()) {
             case TAKE_TOKENS:
                 return _dealer.playerRequestToTakeTokens(currentPlayer, ((TakeTokenActionAndResponse)as).getResponse());

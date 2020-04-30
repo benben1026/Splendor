@@ -51,8 +51,8 @@ public class HumanPlayer extends Player{
     }
 
     @Override
-    public void notifyTurn(Dealer dealer, List<Player> players) {
-
+    public int pickNoble(Map<Integer, Noble> nobles) {
+        return 0;
     }
 
     @Override

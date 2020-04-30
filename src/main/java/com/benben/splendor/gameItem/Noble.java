@@ -1,6 +1,6 @@
 package com.benben.splendor.gameItem;
 
-import com.benben.splendor.util.ColorUtil;
+import com.benben.splendor.util.Color;
 import com.benben.splendor.util.UserInteractionUtil;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Noble extends Item{
 
-    public Noble(Map<ColorUtil.Color, Integer> price) {
+    public Noble(Map<Color, Integer> price) {
         super(price, 3);
         FULL_HEIGHT = 6;
     }
@@ -40,7 +40,7 @@ public class Noble extends Item{
         return output;
     }
 
-    private String getPrintablePrice(ColorUtil.Color color, int count) {
+    private String getPrintablePrice(Color color, int count) {
         String colorString = UserInteractionUtil.getPrintableColor(color);
         return colorString + " &:   " + count + UserInteractionUtil.ANSI_RESET;
     }

@@ -1,15 +1,18 @@
 package com.benben.splendor;
 
+import com.benben.splendor.action.*;
 import com.benben.splendor.gamerole.CPU;
 import com.benben.splendor.gamerole.Dealer;
 import com.benben.splendor.gamerole.HumanPlayer;
 import com.benben.splendor.gamerole.Player;
+import com.benben.splendor.util.Color;
 import com.benben.splendor.util.GameInitUtil;
 import com.benben.splendor.util.UserInteractionUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class Game {
 
@@ -41,6 +44,16 @@ public class Game {
                     i = i % _players.size();
                     otherPlayers.add(_players.get(i).clone());
                 }
+                currentPlayer.askForAction(null, null, null, null);
+
+                ActionAndResponse<> as = currentPlayer.askForAction(null, null, null, null);
+                switch (as.getAction()) {
+                    case TAKE_TOKENS:
+                        TakeTokenActionAndResponse tas = (TakeTokenActionAndResponse) as;
+                }
+                Map<Color, Integer> m = (Map) as.getResponse();
+
+
                 currentPlayer.notifyTurn(_dealer, _players);
                 _dealer.validatePlayerTokenCounts(currentPlayer);
                 _currentPlayerIndex ++;
@@ -61,7 +74,35 @@ public class Game {
             _players.add(new CPU("CPU" + (i + 1)));
         }
         _currentPlayerIndex = 0;
+    }
 
+    private boolean notifyPlayer() {
+        List<Player> opponents = new ArrayList<>();
+        int i = _currentPlayerIndex + 1;
+        while (i != _currentPlayerIndex) {
+            i = i % _players.size();
+            opponents.add(_players.get(i).clone());
+        }
+        // Todo: pass in cards and nobles
+        Player currentPlayer = _players.get(_currentPlayerIndex);
+        ActionAndResponse as = currentPlayer.askForAction(opponents,
+                (Map<Color, Integer>)_dealer.getTokens().clone(), null, null);
+        switch (as.getAction()) {
+            case TAKE_TOKENS:
+                return _dealer.playerRequestToTakeTokens(currentPlayer, ((TakeTokenActionAndResponse)as).getResponse());
+            case BUY_CARD:
+                return _dealer.playerRequestToBuyCard(currentPlayer, ((BuyCardActionAndResponse) as).getResponse());
+            case HOLD_CARD:
+                return _dealer.playerRequestToHoldCard(currentPlayer, _currentPlayerIndex,
+                        ((HoldCardActionAndResponse) as).getResponse());
+            case BUY_HOLD_CARD:
+                return _dealer.playerRequestToBuyHoldCard(currentPlayer, _currentPlayerIndex,
+                        ((BuyHoldCardActionAndResponse) as).getResponse());
+            case PASS:
+                return true;
+            default:
+                return false;
+        }
     }
 
     private Player checkWinner() {

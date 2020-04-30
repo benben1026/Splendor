@@ -1,6 +1,6 @@
 package com.benben.splendor.gamerole;
 
-import com.benben.splendor.util.ColorUtil;
+import com.benben.splendor.util.Color;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +16,7 @@ public class CPU extends Player{
     }
 
     @Override
-    public Map<ColorUtil.Color, Integer> askToReturnTokens() {
+    public Map<Color, Integer> askToReturnTokens() {
         return null;
     }
 }

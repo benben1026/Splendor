@@ -16,7 +16,7 @@ public final class GameInitUtil {
     public static final Scanner SYSTEM_INPUT = new Scanner(System.in);
     private static Random random = new Random(System.currentTimeMillis());
 
-    public static void initGame(
+    public static void loadCardsFromJson(
             int numOfPlayers,
             List<Card> cardsLevel1,
             List<Card> cardsLevel2,
@@ -38,7 +38,7 @@ public final class GameInitUtil {
         List<Noble> buffer = new ArrayList<>();
         for(int i = 0; i < array.size(); i++) {
             JSONObject object = (JSONObject) array.get(i);
-            Map<ColorUtil.Color, Integer> priceMap = getPricesToMap((JSONObject) object.get("price"));
+            Map<Color, Integer> priceMap = getPricesToMap((JSONObject) object.get("price"));
 
             Noble noble = new Noble(priceMap);
             buffer.add(noble);
@@ -59,23 +59,23 @@ public final class GameInitUtil {
     private static void initCardsForPlayer(JSONArray array, List<Card> cards) {
         for (int i = 0; i < array.size(); i++) {
             JSONObject object = (JSONObject) array.get(i);
-            ColorUtil.Color color = ColorUtil.Color.valueOf((String) object.get("color"));
+            Color color = Color.valueOf((String) object.get("color"));
             Integer score = Integer.valueOf((String) object.get("score"));
 
             JSONObject prices = (JSONObject) object.get("price");
-            Map<ColorUtil.Color, Integer> priceMap = getPricesToMap(prices);
+            Map<Color, Integer> priceMap = getPricesToMap(prices);
             Card card = new Card(color, score, priceMap);
             cards.add(card);
         }
     }
 
-    private static LinkedHashMap<ColorUtil.Color, Integer> getPricesToMap(JSONObject prices) {
-        LinkedHashMap<ColorUtil.Color, Integer> priceMap = new LinkedHashMap<>();
-        for (int i = 0; i < ColorUtil.COLOR_COUNT; i++) {
-            priceMap.put(ColorUtil.getColorFromIndex(i), 0);
+    private static LinkedHashMap<Color, Integer> getPricesToMap(JSONObject prices) {
+        LinkedHashMap<Color, Integer> priceMap = new LinkedHashMap<>();
+        for (int i = 0; i < Color.COLOR_COUNT; i++) {
+            priceMap.put(Color.getColorFromIndex(i), 0);
         }
         for (String str : (Set<String>) prices.keySet()) {
-            priceMap.put(ColorUtil.Color.valueOf(str), Integer.valueOf((String) prices.get(str)));
+            priceMap.put(Color.valueOf(str), Integer.valueOf((String) prices.get(str)));
         }
         return priceMap;
     }

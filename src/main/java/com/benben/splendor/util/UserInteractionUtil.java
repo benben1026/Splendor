@@ -37,7 +37,7 @@ public final class UserInteractionUtil {
         }
     }
 
-    public static String getPrintableColor(ColorUtil.Color color) {
+    public static String getPrintableColor(Color color) {
         switch (color) {
             case YELLOW:
                 return ANSI_YELLOW;

@@ -49,36 +49,32 @@ public class Card extends Item{
     @Override
     public List<String> toListOfString() {
         List<String> output = new ArrayList<>();
-        output.add(UserInteractionUtil.getPrintableColor(_color)
-                + UserInteractionUtil.getPrintableCardUpperBorder(9)
-                + UserInteractionUtil.ANSI_RESET);
-        output.add(UserInteractionUtil.getPrintableColor(_color)
+        output.add(UserInteractionUtil.getPrintableCardUpperBorder(9, _color));
+        output.add(_color.toPrintable()
                 + UserInteractionUtil.VERTICAL
                 + String.format("%7s", _color.toString())
                 + UserInteractionUtil.VERTICAL
-                + UserInteractionUtil.ANSI_RESET);
-        output.add(UserInteractionUtil.getPrintableColor(_color)
+                + Color.ANSI_RESET);
+        output.add(_color.toPrintable()
                 + UserInteractionUtil.VERTICAL
                 + String.format("score=%d", _score)
                 + UserInteractionUtil.VERTICAL
-                + UserInteractionUtil.ANSI_RESET);
+                + Color.ANSI_RESET);
         _price.forEach((color, count) -> output.add(getBorder(_color) + getPrintableToken(color, count) + getBorder(_color)));
         for (int i = 0; i < 4 - _price.size(); i++) {
             output.add(getBorder(_color) + "       " + getBorder(_color));
         }
-        output.add(UserInteractionUtil.getPrintableColor(_color)
-                + UserInteractionUtil.getPrintableCardLowerBorder(9)
-                + UserInteractionUtil.ANSI_RESET + UserInteractionUtil.ANSI_RESET);
+        output.add(UserInteractionUtil.getPrintableCardLowerBorder(9, _color));
         return output;
     }
 
     private String getPrintableToken(Color color, int count) {
-        String colorString = UserInteractionUtil.getPrintableColor(color);
-        return colorString + " @:   " + count + UserInteractionUtil.ANSI_RESET;
+        String colorString = color.toPrintable();
+        return colorString + " @:   " + count + Color.ANSI_RESET;
     }
 
     private String getBorder(Color color) {
-        return UserInteractionUtil.getBorder(UserInteractionUtil.getPrintableColor(color));
+        return UserInteractionUtil.getBorder(color.toPrintable());
     }
 
     public Color getColor() {

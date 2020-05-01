@@ -38,16 +38,14 @@ public class Noble extends Item{
 
     @Override
     public List<String> toListOfString() {
-        String colorCode = UserInteractionUtil.ANSI_PURPLE;
+        String colorCode = Color.PURPLE.toPrintable();
         List<String> output = new ArrayList<>();
-        output.add(colorCode
-                + UserInteractionUtil.getPrintableCardUpperBorder(9)
-                + UserInteractionUtil.ANSI_RESET);
+        output.add(UserInteractionUtil.getPrintableCardUpperBorder(9, Color.PURPLE));
         output.add(colorCode
                 + UserInteractionUtil.VERTICAL
                 + String.format("score=%d", _score)
                 + UserInteractionUtil.VERTICAL
-                + UserInteractionUtil.ANSI_RESET);
+                + Color.ANSI_RESET);
         _price.forEach((color, count) -> output.add(UserInteractionUtil.getBorder(colorCode)
                 + getPrintablePrice(color, count)
                 + UserInteractionUtil.getBorder(colorCode)));
@@ -56,15 +54,12 @@ public class Noble extends Item{
                     + "       "
                     + UserInteractionUtil.getBorder(colorCode));
         }
-        output.add(colorCode
-                + UserInteractionUtil.getPrintableCardLowerBorder(9)
-                + UserInteractionUtil.ANSI_RESET + UserInteractionUtil.ANSI_RESET);
+        output.add(UserInteractionUtil.getPrintableCardLowerBorder(9, Color.PURPLE));
         return output;
     }
 
     private String getPrintablePrice(Color color, int count) {
-        String colorString = UserInteractionUtil.getPrintableColor(color);
-        return colorString + " &:   " + count + UserInteractionUtil.ANSI_RESET;
+        return color.toPrintable() + " &:   " + count + Color.ANSI_RESET;
     }
 
     public Noble deepCopy() {

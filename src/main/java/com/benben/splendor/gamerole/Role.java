@@ -49,10 +49,10 @@ public abstract class Role {
 
     public void printToken() {
         List<String> output = new ArrayList<>();
-        output.add(UserInteractionUtil.ANSI_YELLOW + "*:" + _tokens.get(Color.YELLOW) + UserInteractionUtil.ANSI_RESET);
+        output.add(Color.YELLOW.toPrintable() + "*:" + _tokens.get(Color.YELLOW) + Color.ANSI_RESET);
         _tokens.forEach((color, count) -> {
             if (color != Color.YELLOW)
-                output.add(UserInteractionUtil.getPrintableColor(color) + "@:" + count + UserInteractionUtil.ANSI_RESET);
+                output.add(color.toPrintable() + "@:" + count + Color.ANSI_RESET);
         });
         System.out.println(String.join("    ", output));
     }

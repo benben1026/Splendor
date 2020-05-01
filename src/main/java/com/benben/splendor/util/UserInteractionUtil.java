@@ -11,15 +11,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public final class UserInteractionUtil {
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
 
     public static final PrintStream OUT;
     public static final char TOP_LEFT = '\u250F';
@@ -38,39 +29,20 @@ public final class UserInteractionUtil {
         }
     }
 
-    public static String getPrintableColor(Color color) {
-        switch (color) {
-            case YELLOW:
-                return ANSI_YELLOW;
-            case BLUE:
-                return ANSI_BLUE;
-            case RED:
-                return ANSI_RED;
-            case WHITE:
-                return ANSI_WHITE;
-            case GREEN:
-                return ANSI_GREEN;
-            case BLACK:
-                return ANSI_BLACK;
-            default:
-                return "Invalid Color";
-        }
-    }
-
-    public static String getPrintableCardUpperBorder(int length) {
+    public static String getPrintableCardUpperBorder(int length, Color color) {
         String output = "";
         for (int i = 0; i < length - 2; i++) {
             output += HORIZONTAL;
         }
-        return TOP_LEFT + output + TOP_RIGHT;
+        return color.toPrintable() + TOP_LEFT + output + TOP_RIGHT + Color.ANSI_RESET;
     }
 
-    public static String getPrintableCardLowerBorder(int length) {
+    public static String getPrintableCardLowerBorder(int length, Color color) {
         String output = "";
         for (int i = 0; i < length - 2; i++) {
             output += HORIZONTAL;
         }
-        return BOTTOM_LEFT + output + BOTTOM_RIGHT;
+        return color.toPrintable() + BOTTOM_LEFT + output + BOTTOM_RIGHT + Color.ANSI_RESET;
     }
 
     public static void printHeader(int round) {
@@ -142,7 +114,7 @@ public final class UserInteractionUtil {
     public static String getBorder(String colorCode) {
         return colorCode
                 + UserInteractionUtil.VERTICAL
-                + UserInteractionUtil.ANSI_RESET;
+                + Color.ANSI_RESET;
     }
 
     public static int askIntInput(Scanner scanner, String message, Predicate<Integer> validator) {

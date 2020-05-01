@@ -23,8 +23,6 @@ public abstract class Role {
         _tokens.put(Color.YELLOW, 0);
     }
 
-    public abstract void printCurrentStatus(boolean myTurn);
-
     public String getName() {
         return _name;
     }
@@ -51,7 +49,7 @@ public abstract class Role {
 
     public void printToken() {
         List<String> output = new ArrayList<>();
-        output.add(UserInteractionUtil.ANSI_YELLOW + "#:" + _tokens.get(Color.YELLOW) + UserInteractionUtil.ANSI_RESET);
+        output.add(UserInteractionUtil.ANSI_YELLOW + "*:" + _tokens.get(Color.YELLOW) + UserInteractionUtil.ANSI_RESET);
         _tokens.forEach((color, count) -> {
             if (color != Color.YELLOW)
                 output.add(UserInteractionUtil.getPrintableColor(color) + "@:" + count + UserInteractionUtil.ANSI_RESET);

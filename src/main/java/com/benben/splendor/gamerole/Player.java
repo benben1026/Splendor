@@ -79,13 +79,6 @@ public abstract class Player extends Role{
                 Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().size()));
     }
 
-    @Override
-    public final void printCurrentStatus(boolean myTurn) {
-        System.out.println(_name + "  totalScore:" + getTotalScore());
-        printToken();
-        printCards();
-    }
-
     public void printCards() {
         String[] output = new String[Card.CARD_FOLDED_HEIGHT];
         for (int i = 0; i < Card.CARD_FOLDED_HEIGHT; i++) {

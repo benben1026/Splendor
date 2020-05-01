@@ -119,16 +119,9 @@ public class HumanPlayer extends Player{
                 (in) -> in >= 1 && in <= 3) - 1;
     }
 
-    public void receiveTokens(int[] tokens) {
-        for (int i = 0; i < tokens.length; i++) {
-            if (tokens[i] != 0) {
-                receiveTokens(Color.getColorFromIndex(i), tokens[i]);
-            }
-        }
-    }
-
     @Override
     public HumanPlayer deepCopy() {
-        return new HumanPlayer(this._name, this._cards, this._nobles, this._tokens);
+        return new HumanPlayer(this._name, (LinkedHashMap<Color, List<Card>>)this._cards.clone(),
+                this._nobles, (LinkedHashMap<Color, Integer>)this._tokens.clone());
     }
 }

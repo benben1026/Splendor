@@ -90,13 +90,16 @@ public class Dealer extends Role{
             return;
         } else if (affordableNobles.size() == 1) {
             player.receiveNoble((Noble)affordableNobles.values().toArray()[0]);
+            _cardsManager.getAndRemoveNoble((int)affordableNobles.keySet().toArray()[0]);
         } else {
             int index = player.pickNoble(affordableNobles);
             if (!affordableNobles.containsKey(index)) {
                 index = (Integer)affordableNobles.keySet().toArray()[0];
             }
             player.receiveNoble(_cardsManager.getAndRemoveNoble(index));
+            _cardsManager.getAndRemoveNoble(index);
         }
+        UserInteractionUtil.OUT.println(String.format("%s got a noble card", player.getName()));
     }
 
     public boolean playerRequestToTakeTokens(Player player, Map<Color, Integer> tokens) {
@@ -171,6 +174,9 @@ public class Dealer extends Role{
         for (Map.Entry<Color, Integer> singleColorCost : cardToBuy.getPrice().entrySet()) {
             Color color = singleColorCost.getKey();
             int needTokenCount = singleColorCost.getValue() - cardsByCount.getOrDefault(color, 0);
+            if (needTokenCount <= 0) {
+                continue;
+            }
             if (needTokenCount <= player.getTokens().getOrDefault(color, 0)) {
                 // No need to use Star Token
                 player.payWithTokens(color, needTokenCount);
@@ -186,8 +192,7 @@ public class Dealer extends Role{
         }
     }
 
-    @Override
-    public void printCurrentStatus(boolean myTurn) {
+    public void printCurrentStatus() {
         System.out.println(_name + ":");
         UserInteractionUtil.printItemsInOneRow(_cardsManager.getNobles());
         printToken();

@@ -32,7 +32,7 @@ public class Game {
             while (_currentPlayerIndex < _numOfHumanPlayers + _numOfCPUs) {
                 // Print game status
                 UserInteractionUtil.printHeader(round);
-                _dealer.printCurrentStatus(false);
+                _dealer.printCurrentStatus();
                 for (int i = 0; i < _players.size(); i++) {
                     //_players.get(i).printCurrentStatus(i == _currentPlayerIndex);
                     UserInteractionUtil.printPlayerCurrentStatus(_players.get(i), i == _currentPlayerIndex,

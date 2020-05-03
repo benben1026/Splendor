@@ -16,10 +16,7 @@ public class HumanPlayer extends Player{
 
     private HumanPlayer(String name, LinkedHashMap<Color, List<Card>> cards, List<Noble> nobles,
                         LinkedHashMap<Color, Integer> tokens) {
-        this(name);
-        _cards = cards;
-        _nobles = nobles;
-        _tokens = tokens;
+        super(name, cards, nobles, tokens);
     }
 
     @Override

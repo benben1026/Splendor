@@ -3,7 +3,7 @@
   "timePerRoundSecond": 10,
   "totalBufferTimeMinutes": 10,
   "players": {
-    "humanPlayer1": "com.benben.splendor.gamerole.HumanPlayer",
-    "humanPlayer2": "com.benben.splendor.gamerole.HumanPlayer"
+    "NaiveAI1": "com.benben.splendor.gamerole.NaiveAI",
+    "NaiveAI2": "com.benben.splendor.gamerole.NaiveAI"
   }
 }

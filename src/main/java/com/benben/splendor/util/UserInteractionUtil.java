@@ -76,6 +76,9 @@ public final class UserInteractionUtil {
     }
 
     public static void printItemsInOneRow(List<? extends Item> items) {
+        if (items == null || items.isEmpty()) {
+            return;
+        }
         List<Item> nonNullList = items.stream().filter(Objects::nonNull).collect(Collectors.toList());
         if (nonNullList.isEmpty()) {
             return;
@@ -105,6 +108,7 @@ public final class UserInteractionUtil {
 
     public static void printPlayerCurrentStatus(Player player, boolean printHoldCards, List<Card> holdCards) {
         SYSTEM_OUT.println(String.format( "%s totalScore: %d", player.getName(), player.getTotalScore()));
+        printItemsInOneRow(player.getNobles());
         player.printToken();
         player.printCards();
         if (printHoldCards && !holdCards.isEmpty()) {

@@ -9,7 +9,6 @@ import com.benben.splendor.util.GameInitUtil;
 import com.benben.splendor.util.UserInteractionUtil;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +18,7 @@ public class Game {
     private List<Player> _players;
     private int _currentPlayerIndex;
 
-    private void start() {
+    private void start() throws InterruptedException {
         init();
         int round = 1;
 
@@ -38,6 +37,7 @@ public class Game {
                 while(!notifyPlayer()) {
                     continue;
                 }
+                Thread.sleep(2);
 
                 _dealer.validatePlayerTokenCounts(currentPlayer);
                 _dealer.validateEligibleForNoble(currentPlayer);
@@ -71,13 +71,17 @@ public class Game {
                 _dealer.getAllNobleCopy());
         switch (as.getAction()) {
             case TAKE_TOKENS:
+                UserInteractionUtil.SYSTEM_OUT.println(String.format("%s takes tokens %s", currentPlayer.getName(), ((TakeTokenActionAndResponse)as).getResponse()));
                 return _dealer.playerRequestToTakeTokens(currentPlayer, ((TakeTokenActionAndResponse)as).getResponse());
             case BUY_CARD:
+                UserInteractionUtil.SYSTEM_OUT.println(String.format("%s buys card %s", currentPlayer.getName(), ((BuyCardActionAndResponse) as).getResponse().toString()));
                 return _dealer.playerRequestToBuyCard(currentPlayer, ((BuyCardActionAndResponse) as).getResponse());
             case HOLD_CARD:
+                UserInteractionUtil.SYSTEM_OUT.println(String.format("%s holds card", currentPlayer.getName()));
                 return _dealer.playerRequestToHoldCard(currentPlayer, _currentPlayerIndex,
                         ((HoldCardActionAndResponse) as).getResponse());
             case BUY_HOLD_CARD:
+                UserInteractionUtil.SYSTEM_OUT.println(String.format("%s buys hold card", currentPlayer.getName()));
                 return _dealer.playerRequestToBuyHoldCard(currentPlayer, _currentPlayerIndex,
                         ((BuyHoldCardActionAndResponse) as).getResponse());
             case PASS:
@@ -91,6 +95,11 @@ public class Game {
 
     public static void main(String[] args) {
         Game game = new Game();
-        game.start();
+
+        try {
+            game.start();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

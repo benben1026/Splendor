@@ -31,6 +31,14 @@ public abstract class Player extends Role{
         }
     }
 
+    public Player(String name, LinkedHashMap<Color, List<Card>> cards, List<Noble> nobles,
+                        LinkedHashMap<Color, Integer> tokens) {
+        super(name);
+        _cards = cards;
+        _nobles = nobles;
+        _tokens = tokens;
+    }
+
     /**
      * The System will notify the player when it's his turn by calling this method.
      */
@@ -64,6 +72,10 @@ public abstract class Player extends Role{
 
     public final void receiveNoble(Noble noble) {
         _nobles.add(noble);
+    }
+
+    public List<Noble> getNobles() {
+        return _nobles;
     }
 
     public final int getTotalScore() {

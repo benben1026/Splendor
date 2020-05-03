@@ -4,7 +4,7 @@ import com.benben.splendor.gameItem.Card;
 import com.benben.splendor.gameItem.Noble;
 import com.benben.splendor.util.CardsPosition;
 import com.benben.splendor.util.Color;
-import com.benben.splendor.util.GameInitUtil;
+import com.benben.splendor.util.GameUtil;
 import com.benben.splendor.util.UserInteractionUtil;
 
 import java.util.*;
@@ -12,17 +12,15 @@ import java.util.*;
 public class Dealer extends Role{
     private final CardsManager _cardsManager;
     private final List<List<Card>> _playerHoldingCards = new ArrayList<>();
-    private final Random _random;
     private final int _targetScore;
 
     public Dealer(int numOfPlayers, int targetScore) {
-        super("Bank");
-        _random = new Random(System.currentTimeMillis());
+        super("Deal");
         List<Card> deck1 = new ArrayList<>();
         List<Card> deck2 = new ArrayList<>();
         List<Card> deck3 = new ArrayList<>();
         List<Noble> nobles = new ArrayList<>();
-        GameInitUtil.loadCardsFromJson(numOfPlayers,deck1, deck2, deck3, nobles);
+        GameUtil.loadCardsFromJson(numOfPlayers,deck1, deck2, deck3, nobles);
         _cardsManager = new CardsManager(deck1, deck2, deck3, nobles);
 
         for (int i = 0; i < numOfPlayers; i++) {
@@ -44,26 +42,12 @@ public class Dealer extends Role{
         _targetScore = targetScore;
     }
 
-    private void initVisibleCards(List<Card> invisible, List<Card> visible, int num) {
-        while(num > 0) {
-            visible.add(getNextRandomCard(invisible));
-            num --;
-        }
+    public Map<CardsPosition, Card> getPositionToCardsMap() {
+        return _cardsManager.getPositionToCardsMap();
     }
 
-    private Card getNextRandomCard(List<Card> invisibleCardList) {
-        if (invisibleCardList.isEmpty()) {
-            return null;
-        }
-        return invisibleCardList.remove((int)_random.nextInt(invisibleCardList.size()));
-    }
-
-    public Map<CardsPosition, Card> getAllVisibleCardsCopy() {
-        return _cardsManager.getAllVisibleCardsCopy();
-    }
-
-    public List<Noble> getAllNobleCopy() {
-        return _cardsManager.getAllNobleCopy();
+    public List<Noble> getUnmodifiableNobles() {
+        return _cardsManager.getUnmodifiableNobles();
     }
 
     public List<Card> getPlayerHoldCards(int playerIndex) {

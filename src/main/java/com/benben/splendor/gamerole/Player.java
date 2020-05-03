@@ -8,15 +8,12 @@ import com.benben.splendor.util.CardsPosition;
 import com.benben.splendor.util.Color;
 import com.benben.splendor.util.UserInteractionUtil;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class Player extends Role{
 
-    LinkedHashMap<Color, List<Card>> _cards;
+    Map<Color, List<Card>> _cards;
     List<Noble> _nobles;
 
     public Player(String name) {
@@ -31,12 +28,15 @@ public abstract class Player extends Role{
         }
     }
 
-    public Player(String name, LinkedHashMap<Color, List<Card>> cards, List<Noble> nobles,
-                        LinkedHashMap<Color, Integer> tokens) {
+    /**
+     * This constructor is designed for creating a unmodifiable instance, thus we will
+     * make everything unmodifiable in this constructor.
+     */
+    public Player(String name, Map<Color, List<Card>> cards, List<Noble> nobles, Map<Color, Integer> tokens) {
         super(name);
-        _cards = cards;
-        _nobles = nobles;
-        _tokens = tokens;
+        _cards = Collections.unmodifiableMap(cards);
+        _nobles = Collections.unmodifiableList(nobles);
+        _tokens = Collections.unmodifiableMap(tokens);
     }
 
     /**
@@ -45,10 +45,15 @@ public abstract class Player extends Role{
     public abstract ActionAndResponse askForAction(List<Player> opponents,
                                                    Map<Color, Integer> remainingTokens,
                                                    Map<CardsPosition, Card> visibleCards,
+                                                   List<Card> holdCard,
                                                    List<Noble> nobles);
 
     public abstract int pickNoble(Map<Integer, Noble> nobles);
 
+    /**
+     * Please create another constructor which takes name, cards, nobles and tokens and call
+     * that constructor inside this deepCopy method.
+     */
     public abstract <T extends Player> T deepCopy();
 
     /**

@@ -14,14 +14,15 @@ public class HumanPlayer extends Player{
         super(name);
     }
 
-    private HumanPlayer(String name, LinkedHashMap<Color, List<Card>> cards, List<Noble> nobles,
-                        LinkedHashMap<Color, Integer> tokens) {
+    private HumanPlayer(String name, Map<Color, List<Card>> cards, List<Noble> nobles,
+                        Map<Color, Integer> tokens) {
         super(name, cards, nobles, tokens);
     }
 
     @Override
     public ActionAndResponse askForAction(List<Player> opponents, Map<Color, Integer> remainingTokens,
-                                          Map<CardsPosition, Card> visibleCards, List<Noble> nobles) {
+                                          Map<CardsPosition, Card> visibleCards, List<Card> holdCard,
+                                          List<Noble> nobles) {
         while(true) {
             try {
                 int selection = UserInteractionUtil.askIntInput(UserInteractionUtil.SYSTEM_INPUT,
@@ -118,7 +119,6 @@ public class HumanPlayer extends Player{
 
     @Override
     public HumanPlayer deepCopy() {
-        return new HumanPlayer(this._name, (LinkedHashMap<Color, List<Card>>)this._cards.clone(),
-                this._nobles, (LinkedHashMap<Color, Integer>)this._tokens.clone());
+        return new HumanPlayer(_name, _cards, _nobles, _tokens);
     }
 }

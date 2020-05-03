@@ -3,14 +3,13 @@ package com.benben.splendor;
 import com.benben.splendor.action.*;
 import com.benben.splendor.gamerole.Dealer;
 import com.benben.splendor.gamerole.Player;
-import com.benben.splendor.util.Color;
 import com.benben.splendor.util.GameConfig;
-import com.benben.splendor.util.GameInitUtil;
+import com.benben.splendor.util.GameUtil;
 import com.benben.splendor.util.UserInteractionUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class Game {
 
@@ -50,7 +49,7 @@ public class Game {
     }
 
     private void init() {
-        GameConfig gameConfig = GameInitUtil.loadGameConfig();
+        GameConfig gameConfig = GameUtil.loadGameConfig();
         _dealer = new Dealer(gameConfig._players.size(), gameConfig._targetScore);
         _players = gameConfig._players;
         _currentPlayerIndex = 0;
@@ -67,8 +66,10 @@ public class Game {
 
         Player currentPlayer = _players.get(_currentPlayerIndex);
         ActionAndResponse as = currentPlayer.askForAction(opponents,
-                (Map<Color, Integer>)_dealer.getTokens().clone(), _dealer.getAllVisibleCardsCopy(),
-                _dealer.getAllNobleCopy());
+                Collections.unmodifiableMap(_dealer.getTokens()),
+                _dealer.getPositionToCardsMap(),
+                Collections.unmodifiableList(_dealer.getPlayerHoldCards(_currentPlayerIndex)),
+                _dealer.getUnmodifiableNobles());
         switch (as.getAction()) {
             case TAKE_TOKENS:
                 UserInteractionUtil.SYSTEM_OUT.println(String.format("%s takes tokens %s", currentPlayer.getName(), ((TakeTokenActionAndResponse)as).getResponse()));

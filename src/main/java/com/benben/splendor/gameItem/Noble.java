@@ -61,8 +61,4 @@ public class Noble extends Item{
     private String getPrintablePrice(Color color, int count) {
         return color.toPrintable() + " &:   " + count + Color.ANSI_RESET;
     }
-
-    public Noble deepCopy() {
-        return new Noble(this._price);
-    }
 }

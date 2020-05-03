@@ -6,11 +6,12 @@ import com.benben.splendor.util.UserInteractionUtil;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Role {
 
     String _name;
-    LinkedHashMap<Color, Integer> _tokens;
+    Map<Color, Integer> _tokens;
 
     public Role(String name) {
         _name = name;
@@ -27,7 +28,7 @@ public abstract class Role {
         return _name;
     }
 
-    public LinkedHashMap<Color, Integer> getTokens() {
+    public Map<Color, Integer> getTokens() {
         return _tokens;
     }
 

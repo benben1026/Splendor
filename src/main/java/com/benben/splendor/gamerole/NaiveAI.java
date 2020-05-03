@@ -18,14 +18,14 @@ public class NaiveAI extends Player {
         super(name);
     }
 
-    public NaiveAI(String name, LinkedHashMap<Color, List<Card>> cards, List<Noble> nobles,
-                   LinkedHashMap<Color, Integer> tokens) {
+    public NaiveAI(String name, Map<Color, List<Card>> cards, List<Noble> nobles, Map<Color, Integer> tokens) {
         super(name, cards, nobles, tokens);
     }
 
     @Override
     public ActionAndResponse askForAction(List<Player> opponents, Map<Color, Integer> remainingTokens,
-                                          Map<CardsPosition, Card> visibleCards, List<Noble> nobles) {
+                                          Map<CardsPosition, Card> visibleCards, List<Card> holdCard,
+                                          List<Noble> nobles) {
         LinkedHashMap<CardsPosition, Card> cardsOrderedByScore = visibleCards.entrySet().stream()
                 .filter(entry -> entry.getValue() != null)
                 .sorted(Comparator.comparingInt(entry -> entry.getValue().getScore() * -1))
@@ -85,7 +85,7 @@ public class NaiveAI extends Player {
 
     @Override
     public NaiveAI deepCopy() {
-        return new NaiveAI(this.getName(), _cards, _nobles, _tokens);
+        return new NaiveAI(_name, _cards, _nobles, _tokens);
     }
 
     @Override
@@ -102,7 +102,8 @@ public class NaiveAI extends Player {
     }
 
     private Map<Color, Integer> getNumOfTokenNeed(Card card) {
-        Map<Color, Integer> price = card.getPrice();
+        Map<Color, Integer> price = card.getPrice().entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         for (Map.Entry<Color, Integer> pair : price.entrySet()) {
             int diff = pair.getValue()
                     - getCardsByCount().get(pair.getKey())

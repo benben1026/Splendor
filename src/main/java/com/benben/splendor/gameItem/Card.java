@@ -80,8 +80,4 @@ public class Card extends Item{
     public Color getColor() {
         return _color;
     }
-
-    public Card deepCopy() {
-        return new Card(this._color, this._score, this._price);
-    }
 }

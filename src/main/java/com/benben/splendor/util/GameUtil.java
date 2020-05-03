@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.*;
 
-public final class GameInitUtil {
+public final class GameUtil {
 
     private static final Random random = new Random(System.currentTimeMillis());
 

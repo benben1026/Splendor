@@ -6,7 +6,6 @@ import com.benben.splendor.util.CardsPosition;
 import com.benben.splendor.util.Color;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CardsManager {
     private static final int VISIBLE_CARDS_PER_LEVEL = 4;
@@ -48,9 +47,7 @@ public class CardsManager {
         Map<Integer, Noble> affordableNobles = new HashMap<>();
         for (int i = 0; i < _nobles.size(); i++) {
             if (_nobles.get(i).affordable(playerCards)) {
-                //todo: fix clone
-                affordableNobles.put(i, _nobles.get(i).deepCopy());
-                //affordableNobles.put(i, _nobles.get(i));
+                affordableNobles.put(i, _nobles.get(i));
             }
         }
         return affordableNobles;
@@ -79,21 +76,16 @@ public class CardsManager {
         return cardToReturn;
     }
 
-    public Map<CardsPosition, Card> getAllVisibleCardsCopy() {
+    public Map<CardsPosition, Card> getPositionToCardsMap() {
         Map<CardsPosition, Card> cards = new HashMap<>();
         for (int i = 0; i < _visibleCards.length; i++) {
-            cards.put(CardsPosition.getPositionFromIndex(i),
-                    _visibleCards[i] == null ? null : _visibleCards[i].deepCopy());
-            //todo: fix clone
-            //cards.put(CardsPosition.getPositionFromIndex(i), _visibleCards[i]);
+            cards.put(CardsPosition.getPositionFromIndex(i), _visibleCards[i]);
         }
         return cards;
     }
 
-    public List<Noble> getAllNobleCopy() {
-        // Todo: fix clone
-        return _nobles.stream().map(Noble::deepCopy).collect(Collectors.toList());
-        //return new ArrayList<>(_nobles);
+    public List<Noble> getUnmodifiableNobles() {
+        return Collections.unmodifiableList(_nobles);
     }
 
     private Card flipCard(int level) {

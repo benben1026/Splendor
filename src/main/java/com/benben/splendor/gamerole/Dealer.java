@@ -13,8 +13,9 @@ public class Dealer extends Role{
     private final CardsManager _cardsManager;
     private final List<List<Card>> _playerHoldingCards = new ArrayList<>();
     private final Random _random;
+    private final int _targetScore;
 
-    public Dealer(int numOfPlayers) {
+    public Dealer(int numOfPlayers, int targetScore) {
         super("Bank");
         _random = new Random(System.currentTimeMillis());
         List<Card> deck1 = new ArrayList<>();
@@ -40,6 +41,7 @@ public class Dealer extends Role{
         _tokens.put(Color.RED, tokenCount);
         _tokens.put(Color.BLUE, tokenCount);
         _tokens.put(Color.YELLOW, 5);
+        _targetScore = targetScore;
     }
 
     private void initVisibleCards(List<Card> invisible, List<Card> visible, int num) {
@@ -99,7 +101,7 @@ public class Dealer extends Role{
             player.receiveNoble(_cardsManager.getAndRemoveNoble(index));
             _cardsManager.getAndRemoveNoble(index);
         }
-        UserInteractionUtil.OUT.println(String.format("%s got a noble card", player.getName()));
+        UserInteractionUtil.SYSTEM_OUT.println(String.format("%s got a noble card", player.getName()));
     }
 
     public boolean playerRequestToTakeTokens(Player player, Map<Color, Integer> tokens) {
@@ -192,8 +194,24 @@ public class Dealer extends Role{
         }
     }
 
+    public Player checkWinner(List<Player> players) {
+        Player player = players.stream().max(Comparator.comparingInt(Player::getTotalScore)).get();
+        UserInteractionUtil.SYSTEM_OUT.println(
+                String.format("%s has the highest score: %d",player.getName(), player.getTotalScore()));
+
+        if (player.getTotalScore() >= _targetScore) {
+            UserInteractionUtil.SYSTEM_OUT.println(
+                    String.format("Congratulations %s, you win the game with highest score: %d",
+                            player.getName(), player.getTotalScore()));
+            players.forEach(p1 -> UserInteractionUtil.SYSTEM_OUT.println(
+                    String.format("%s score = %d", p1.getName(), p1.getTotalScore())));
+            return player;
+        }
+        return null;
+    }
+
     public void printCurrentStatus() {
-        System.out.println(_name + ":");
+        UserInteractionUtil.SYSTEM_OUT.println(String.format("Target Score: %d", _targetScore));
         UserInteractionUtil.printItemsInOneRow(_cardsManager.getNobles());
         printToken();
         UserInteractionUtil.printItemsInOneRow(_cardsManager.getVisibleCards());

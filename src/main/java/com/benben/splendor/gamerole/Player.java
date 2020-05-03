@@ -94,6 +94,6 @@ public abstract class Player extends Role{
                     + Color.ANSI_RESET;
             output[2] += "    " + UserInteractionUtil.getPrintableCardLowerBorder(3, color);
         }
-        System.out.println(String.join("\n", output));
+        UserInteractionUtil.SYSTEM_OUT.println(String.join("\n", output));
     }
 }

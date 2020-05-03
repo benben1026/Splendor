@@ -1,0 +1,9 @@
+{
+  "targetScore": 15,
+  "timePerRoundSecond": 10,
+  "totalBufferTimeMinutes": 10,
+  "players": {
+    "humanPlayer1": "com.benben.splendor.gamerole.HumanPlayer",
+    "humanPlayer2": "com.benben.splendor.gamerole.HumanPlayer"
+  }
+}

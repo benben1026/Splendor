@@ -54,6 +54,6 @@ public abstract class Role {
             if (color != Color.YELLOW)
                 output.add(color.toPrintable() + "@:" + count + Color.ANSI_RESET);
         });
-        System.out.println(String.join("    ", output));
+        UserInteractionUtil.SYSTEM_OUT.println(String.join("    ", output));
     }
 }

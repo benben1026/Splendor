@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
 
 public final class UserInteractionUtil {
 
-    public static final PrintStream OUT;
+    public static final PrintStream SYSTEM_OUT;
+    public static final Scanner SYSTEM_INPUT = new Scanner(System.in);
     public static final char TOP_LEFT = '\u250F';
     public static final char TOP_RIGHT = '\u2513';
     public static final char BOTTOM_LEFT = '\u2517';
@@ -23,26 +24,26 @@ public final class UserInteractionUtil {
 
     static {
         try {
-            OUT = new PrintStream(System.out, true, "UTF-8");
+            SYSTEM_OUT = new PrintStream(System.out, true, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
     }
 
     public static String getPrintableCardUpperBorder(int length, Color color) {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         for (int i = 0; i < length - 2; i++) {
-            output += HORIZONTAL;
+            output.append(HORIZONTAL);
         }
-        return color.toPrintable() + TOP_LEFT + output + TOP_RIGHT + Color.ANSI_RESET;
+        return color.toPrintable() + TOP_LEFT + output.toString() + TOP_RIGHT + Color.ANSI_RESET;
     }
 
     public static String getPrintableCardLowerBorder(int length, Color color) {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         for (int i = 0; i < length - 2; i++) {
-            output += HORIZONTAL;
+            output.append(HORIZONTAL);
         }
-        return color.toPrintable() + BOTTOM_LEFT + output + BOTTOM_RIGHT + Color.ANSI_RESET;
+        return color.toPrintable() + BOTTOM_LEFT + output.toString() + BOTTOM_RIGHT + Color.ANSI_RESET;
     }
 
     public static void printHeader(int round) {
@@ -71,7 +72,7 @@ public final class UserInteractionUtil {
             }
             output.add(sb.toString());
         }
-        System.out.println(String.join("\n", output));
+        SYSTEM_OUT.println(String.join("\n", output));
     }
 
     public static void printItemsInOneRow(List<? extends Item> items) {
@@ -99,11 +100,11 @@ public final class UserInteractionUtil {
             }
         }
 
-        OUT.println(String.join("\n", output));
+        SYSTEM_OUT.println(String.join("\n", output));
     }
 
     public static void printPlayerCurrentStatus(Player player, boolean printHoldCards, List<Card> holdCards) {
-        System.out.println(player.getName() + "  totalScore:" + player.getTotalScore());
+        SYSTEM_OUT.println(String.format( "%s totalScore: %d", player.getName(), player.getTotalScore()));
         player.printToken();
         player.printCards();
         if (printHoldCards && !holdCards.isEmpty()) {
@@ -133,16 +134,16 @@ public final class UserInteractionUtil {
     public static int askIntInputOnce(Scanner scanner, String message, Predicate<Integer> validator)
             throws InvalidInputException {
         int input;
-        System.out.print(message);
+        SYSTEM_OUT.print(message);
         try{
             input = scanner.nextInt();
         } catch (Exception e) {
-            System.out.println("Invalid input.");
+            SYSTEM_OUT.println("Invalid input.");
             scanner.nextLine();
             throw new InvalidInputException();
         }
         if (!validator.test(input)) {
-            System.out.println("Invalid input.");
+            SYSTEM_OUT.println("Invalid input.");
             throw new InvalidInputException();
         }
         return input;
@@ -164,16 +165,16 @@ public final class UserInteractionUtil {
     public static String askStringInputOnce(Scanner scanner, String message, Predicate<String> validator)
             throws InvalidInputException {
         String input;
-        System.out.print(message);
+        SYSTEM_OUT.print(message);
         try{
             input = scanner.next();
         } catch (Exception e) {
-            System.out.println("Invalid input.");
+            SYSTEM_OUT.println("Invalid input.");
             scanner.nextLine();
             throw new InvalidInputException();
         }
         if (!validator.test(input)) {
-            System.out.println("Invalid input.");
+            SYSTEM_OUT.println("Invalid input.");
             throw new InvalidInputException();
         }
         return input;

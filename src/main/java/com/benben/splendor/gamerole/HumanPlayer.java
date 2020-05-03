@@ -27,7 +27,7 @@ public class HumanPlayer extends Player{
                                           Map<CardsPosition, Card> visibleCards, List<Noble> nobles) {
         while(true) {
             try {
-                int selection = UserInteractionUtil.askIntInput(GameInitUtil.SYSTEM_INPUT,
+                int selection = UserInteractionUtil.askIntInput(UserInteractionUtil.SYSTEM_INPUT,
                         "Please choose your action:\n(1)Take tokens;\n(2)Buy card;\n"
                                 + "(3)Hold card;\n(4)Buy hold card;\n(5)Pass\n",
                         (input) -> input >=1 && input <= 5);
@@ -64,7 +64,7 @@ public class HumanPlayer extends Player{
     public Map<Color, Integer> askToReturnTokens() {
         printToken();
         Map<Color, Integer> returnTokens = new HashMap<>();
-        UserInteractionUtil.askStringInput(GameInitUtil.SYSTEM_INPUT,
+        UserInteractionUtil.askStringInput(UserInteractionUtil.SYSTEM_INPUT,
                 "Please return some tokens to keep total number under 10 (White, Blue, Green, Red, Black), separate by \",\":\n",
                 (input) -> {
                     try {
@@ -81,14 +81,14 @@ public class HumanPlayer extends Player{
     }
 
     private Map<Color, Integer> takeTokens() throws InvalidInputException {
-        String userInput = UserInteractionUtil.askStringInputOnce(GameInitUtil.SYSTEM_INPUT,
+        String userInput = UserInteractionUtil.askStringInputOnce(UserInteractionUtil.SYSTEM_INPUT,
                 "Please choose the number of tokens you want to take(White, Blue, Green, Red, Black), separate by \",\":\n",
                 (input) -> true);
         int[] tokens;
         try {
             tokens = Arrays.stream(userInput.split(",")).mapToInt(Integer::parseInt).toArray();
         } catch (Exception e) {
-            UserInteractionUtil.OUT.println("Invalid Input");
+            UserInteractionUtil.SYSTEM_OUT.println("Invalid Input");
             throw new InvalidInputException();
         }
         if (tokens.length != 5) {
@@ -104,7 +104,7 @@ public class HumanPlayer extends Player{
     }
 
     private CardsPosition selectCard(String message, Predicate<Integer> predicate) throws InvalidInputException {
-        int index = UserInteractionUtil.askIntInputOnce(GameInitUtil.SYSTEM_INPUT,
+        int index = UserInteractionUtil.askIntInputOnce(UserInteractionUtil.SYSTEM_INPUT,
                 message, predicate);
         CardsPosition cardsPosition =  CardsPosition.getPositionFromIndex(index - 1);
         if (cardsPosition == null) {
@@ -114,7 +114,7 @@ public class HumanPlayer extends Player{
     }
 
     private int buyHoldCard() throws InvalidInputException {
-        return UserInteractionUtil.askIntInputOnce(GameInitUtil.SYSTEM_INPUT,
+        return UserInteractionUtil.askIntInputOnce(UserInteractionUtil.SYSTEM_INPUT,
                 "Please choose the card you want to buy ( 1-3 )",
                 (in) -> in >= 1 && in <= 3) - 1;
     }

@@ -83,7 +83,6 @@ public class Dealer extends Role{
                 index = (Integer)affordableNobles.keySet().toArray()[0];
             }
             player.receiveNoble(_cardsManager.getAndRemoveNoble(index));
-            _cardsManager.getAndRemoveNoble(index);
         }
         UserInteractionUtil.SYSTEM_OUT.println(String.format("%s got a noble card", player.getName()));
     }

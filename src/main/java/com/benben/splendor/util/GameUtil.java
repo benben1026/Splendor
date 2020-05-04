@@ -2,7 +2,6 @@ package com.benben.splendor.util;
 
 import com.benben.splendor.gameItem.Card;
 import com.benben.splendor.gameItem.Noble;
-import com.benben.splendor.gamerole.Player;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -10,35 +9,11 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.util.*;
 
 public final class GameUtil {
 
     private static final Random random = new Random(System.currentTimeMillis());
-
-    public static GameConfig loadGameConfig() {
-        String path = "./src/main/resources/config.json";
-        JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader(path)) {
-            JSONObject object = (JSONObject) jsonParser.parse(reader);
-            int targetScore = ((Long) object.get("targetScore")).intValue();
-            int timePerRoundSecond = ((Long) object.get("timePerRoundSecond")).intValue();
-            int totalBufferTimeMinutes = ((Long) object.get("totalBufferTimeMinutes")).intValue();
-            List<Player> players = new ArrayList<>();
-            JSONObject playersJsonObject = (JSONObject)object.get("players");
-            for (Object key : playersJsonObject.keySet()) {
-                Class<?> clazz = Class.forName((String) playersJsonObject.get(key));
-                Constructor<?> constructor = clazz.getConstructor(String.class);
-                players.add((Player)constructor.newInstance(key));
-            }
-            return new GameConfig(targetScore, timePerRoundSecond, totalBufferTimeMinutes, players);
-        } catch (IOException | ParseException e1) {
-            throw new RuntimeException("Failed to load config file.", e1);
-        } catch (Exception e2) {
-            throw new RuntimeException("Failed to load player class", e2);
-        }
-    }
 
     public static void loadCardsFromJson(
             int numOfPlayers,

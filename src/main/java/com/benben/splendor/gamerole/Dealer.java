@@ -69,11 +69,11 @@ public class Dealer extends Role{
         }
     }
 
-    public void validateEligibleForNoble(Player player) {
+    public boolean validateEligibleForNoble(Player player) {
         Map<Color, Integer> cardsByCount = player.getCardsByCount();
         Map<Integer, Noble> affordableNobles = _cardsManager.getAffordableNobleList(cardsByCount);
         if (affordableNobles.size() == 0) {
-            return;
+            return false;
         } else if (affordableNobles.size() == 1) {
             player.receiveNoble((Noble)affordableNobles.values().toArray()[0]);
             _cardsManager.getAndRemoveNoble((int)affordableNobles.keySet().toArray()[0]);
@@ -84,7 +84,7 @@ public class Dealer extends Role{
             }
             player.receiveNoble(_cardsManager.getAndRemoveNoble(index));
         }
-        UserInteractionUtil.SYSTEM_OUT.println(String.format("%s got a noble card", player.getName()));
+        return true;
     }
 
     public boolean playerRequestToTakeTokens(Player player, Map<Color, Integer> tokens) {
@@ -175,22 +175,6 @@ public class Dealer extends Role{
                 this.receiveTokens(color, needTokenCount - diff);
             }
         }
-    }
-
-    public Player checkWinner(List<Player> players) {
-        Player player = players.stream().max(Comparator.comparingInt(Player::getTotalScore)).get();
-        UserInteractionUtil.SYSTEM_OUT.println(
-                String.format("%s has the highest score: %d",player.getName(), player.getTotalScore()));
-
-        if (player.getTotalScore() >= _targetScore) {
-            UserInteractionUtil.SYSTEM_OUT.println(
-                    String.format("Congratulations %s, you win the game with highest score: %d",
-                            player.getName(), player.getTotalScore()));
-            players.forEach(p1 -> UserInteractionUtil.SYSTEM_OUT.println(
-                    String.format("%s score = %d", p1.getName(), p1.getTotalScore())));
-            return player;
-        }
-        return null;
     }
 
     public void printCurrentStatus() {

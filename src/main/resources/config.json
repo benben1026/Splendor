@@ -2,6 +2,8 @@
   "targetScore": 15,
   "timePerRoundSecond": 10,
   "totalBufferTimeMinutes": 10,
+  "printSteps": true,
+  "totalNumOfGamesToPlay": 1,
   "players": {
     "NaiveAI1": "com.benben.splendor.gamerole.NaiveAI",
     "NaiveAI2": "com.benben.splendor.gamerole.NaiveAI"
